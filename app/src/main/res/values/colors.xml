@@ -4,9 +4,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <!--added color-->
-    <color name="background">#BFC8D9</color>
-    <color name="button">#9DB6D9</color>
+    <color name="background">#FFEF82</color>
+    <color name="button">#82954B</color>
     <color name="link_text">#221FCD</color>
-    <color name="text_box">#D9D9D9</color>
-
+    <color name="text_box">#EFD345</color>
+    <color name="text_color">#82954B</color>
 </resources>

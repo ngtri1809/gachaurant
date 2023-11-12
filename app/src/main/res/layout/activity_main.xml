@@ -8,20 +8,20 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/signUpBtn"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_margin="35dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/button"
-        android:text="Log in"
-        android:textColor="#000000"
+        android:text="Login"
+        android:textColor="@color/background"
         android:textSize="20dp"
         android:textStyle="bold"
         app:cornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEdit" />
+        app:layout_constraintTop_toBottomOf="@id/usernameEdit" />
 
     <EditText
         android:id="@+id/emailEdit"
@@ -33,13 +33,14 @@
         android:background="@drawable/border_edittext"
         android:drawableLeft="@drawable/icons8_email_64"
         android:hint=" Enter your email"
+        android:textColorHint="#8082954B"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailText" />
 
     <EditText
-        android:id="@+id/passwordEdit"
+        android:id="@+id/usernameEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -49,6 +50,7 @@
         android:drawableLeft="@android:drawable/ic_lock_lock"
         android:hint="Enter your password"
         android:inputType="textPassword"
+        android:textColorHint="#8082954B"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="50dp"
-
+        android:textColor="@color/text_color"
         android:text="Email"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +75,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:text="Password"
+        android:textColor="@color/text_color"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEdit" />
@@ -94,9 +97,10 @@
         android:layout_marginTop="10dp"
         android:text="Forgot your password?"
         android:textStyle="bold"
+        android:textColor="@color/text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -108,11 +112,13 @@
         app:layout_constraintTop_toBottomOf="@+id/forgotPasswordText">
 
         <TextView
-            android:id="@+id/noAccountText"
+            android:id="@+id/AlreadyHaveAnAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="Don't have an account? " />
+            android:text="Don't have an account? "
+            android:textColor="@color/text_color"
+            />
 
         <TextView
             android:id="@+id/signUpText"
