@@ -77,7 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
 
     <Button
-        android:id="@+id/signUpBtn"
+        android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_margin="35dp"
@@ -122,7 +122,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fullnameText" />
 
     <EditText
-        android:id="@+id/usernameEdit"
+        android:id="@+id/userNameEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -146,7 +146,7 @@
         android:textColor="@color/text_color"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameEdit" />
+        app:layout_constraintTop_toBottomOf="@+id/userNameEdit" />
 
     <TextView
         android:id="@+id/usernameText"
@@ -168,7 +168,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpBtn">
+        app:layout_constraintTop_toBottomOf="@+id/loginButton">
 
         <TextView
             android:id="@+id/alreadyHaveAnAccount"
@@ -179,7 +179,7 @@
             android:textColor="@color/text_color" />
 
         <TextView
-            android:id="@+id/signUpText"
+            android:id="@+id/signInText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -200,5 +200,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
