@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-    TextView signUp;
+    LinearLayout signUp;
     EditText email,password;
     Button loginButton;
     ProgressBar progressBar;
@@ -32,10 +34,17 @@ public class MainActivity extends AppCompatActivity {
         //Initialize Var
         email = findViewById(R.id.emailEdit);
         password = findViewById(R.id.passwordEditLogin);
-        signUp = findViewById(R.id.signInText);
+        signUp = findViewById(R.id.signUpLayout);
         fAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
         loginButton = findViewById(R.id.loginButton);
+
+        //If user hasn't logged out lead user to the main page
+        if(fAuth.getCurrentUser() != null){
+            Toast.makeText(MainActivity.this,"User hasn't logged out",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+            finish();
+        }
 
         //Login
         loginButton.setOnClickListener(new View.OnClickListener() {

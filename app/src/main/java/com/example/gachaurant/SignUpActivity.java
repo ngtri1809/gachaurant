@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
     EditText full_name, email, password, confirm, user_name;
     Button signUpBtn;
-    TextView signIn;
+    LinearLayout signIn;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
     FirebaseFirestore fStore;
@@ -37,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         //Initialize var
         full_name = findViewById(R.id.fullnameEdit);
-        user_name = findViewById(R.id.passwordEdit);
+        user_name = findViewById(R.id.userNameEdit);
         email = findViewById(R.id.emailEdit);
         password = findViewById(R.id.passwordEdit);
         confirm = findViewById(R.id.confirmEdit);
@@ -45,12 +46,14 @@ public class SignUpActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         progressBar = findViewById(R.id.progressBar);
-        signIn = findViewById(R.id.signInText);
+        signIn = findViewById(R.id.signInLayout);
 
-//        if(fAuth.getCurrentUser() != null){
-//            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//            finish();
-//        }
+        //If user hasn't logged out lead user to the main page
+        if(fAuth.getCurrentUser() != null){
+            Toast.makeText(SignUpActivity.this,"User hasn't logged out",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+            finish();
+        }
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,12 +66,6 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-    }
-
-    public void goToHome(View view){
-        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     //Process form view method
@@ -88,10 +85,12 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(SignUpActivity.this, "User Created successfully", Toast.LENGTH_SHORT).show();
                 userID = fAuth.getCurrentUser().getUid();
                 DocumentReference documentReference = fStore.collection("users").document(userID);
+                //Create map of user's info
                 Map<String, Object> user = new HashMap<>();
                 user.put("fullName", fullNameString);
                 user.put("email", emailString);
                 user.put("userName", userNameString);
+                user.put("preference", null);
                 //Insert user map into database
                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -99,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.d(TAG, "onSuccess: user profile is created for" + userID);
                     }
                 });
-                startActivity(new Intent(getApplicationContext(), MainActivity.class)); //After successfully registered, sent users to login page
+                startActivity(new Intent(getApplicationContext(), InformationActivity.class)); //After successfully registered, sent users to information page
             }else{
                 Toast.makeText(SignUpActivity.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
@@ -118,8 +117,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
     public boolean validateUserName(String userName){
-
-        //Check if first name is empty
+        //Check if username is empty
         if(userName.isEmpty()){
             user_name.setError("username cannot be empty");
             return false;

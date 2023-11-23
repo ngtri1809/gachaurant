@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".InformationActivity">
+
+  <TextView
+      android:id="@+id/PreferenceTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="35dp"
+      android:text="Please Select Your Food Preference"
+      android:textColor="@color/text_color"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <CheckBox
+      android:id="@+id/vietnameseCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="50dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Vietnamese"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintEnd_toStartOf="@+id/chineseCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/PreferenceTextView"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/chineseCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Chinese"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/vietnameseCB"
+      app:layout_constraintEnd_toStartOf="@+id/koreanCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/vietnameseCB"
+      app:layout_constraintTop_toTopOf="@+id/vietnameseCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/koreanCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Korean"
+      android:textColor="@color/text_color"
+
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/chineseCB"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/chineseCB"
+      app:layout_constraintTop_toTopOf="@+id/chineseCB"
+      app:layout_constraintVertical_bias="0.0"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/thaiCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Thai"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintEnd_toStartOf="@id/mexicanCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/vietnameseCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/mexicanCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Mexican"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/thaiCB"
+      app:layout_constraintEnd_toStartOf="@id/japaneseCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/thaiCB"
+      app:layout_constraintTop_toTopOf="@+id/thaiCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/japaneseCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Japanese"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/mexicanCB"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/mexicanCB"
+      app:layout_constraintTop_toTopOf="@+id/mexicanCB"
+      app:layout_constraintVertical_bias="1.0"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/indianCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Indian"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintEnd_toStartOf="@+id/ramenCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/thaiCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/ramenCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Ramen"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/indianCB"
+      app:layout_constraintEnd_toStartOf="@+id/chickenCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/indianCB"
+      app:layout_constraintTop_toTopOf="@+id/indianCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/chickenCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Chicken"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/ramenCB"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/ramenCB"
+      app:layout_constraintTop_toTopOf="@+id/ramenCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/bbqCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="BBQ"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintEnd_toStartOf="@+id/fastFoodCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/indianCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/fastFoodCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Fast Food"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/bbqCB"
+      app:layout_constraintEnd_toStartOf="@+id/italianCB"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/bbqCB"
+      app:layout_constraintTop_toTopOf="@+id/bbqCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <CheckBox
+      android:id="@+id/italianCB"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginEnd="5dp"
+      android:background="@drawable/border_edittext"
+      android:buttonTint="@color/text_color"
+      android:text="Italian"
+      android:textColor="@color/text_color"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@+id/fastFoodCB"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toEndOf="@+id/fastFoodCB"
+      app:layout_constraintTop_toTopOf="@+id/fastFoodCB"
+      app:layout_constraintWidth_percent="0.31" />
+
+  <Button
+      android:id="@+id/confirmButton"
+      android:layout_width="0dp"
+      android:layout_height="60dp"
+      android:layout_margin="35dp"
+      android:backgroundTint="@color/button"
+      android:text="Confirm"
+      android:textColor="@color/background"
+      android:textSize="20dp"
+      android:textStyle="bold"
+      app:cornerRadius="15dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <TextView
+      android:id="@+id/locationTv"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="15dp"
+      android:layout_marginTop="35dp"
+      android:text="Location"
+      android:textColor="@color/text_color"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/bbqCB" />
+
+  <EditText
+      android:id="@+id/locationEditTExt"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:background="@drawable/border_edittext"
+      android:hint="Enter your location"
+      android:inputType="text"
+      android:layout_marginStart="15dp"
+      android:layout_marginEnd="15dp"
+      android:textColorHint="#806B7A3D"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/locationTv" />
+
+  <ProgressBar
+      android:id="@+id/progressBar2"
+      style="?android:attr/progressBarStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="35dp"
+      android:visibility="invisible"
+      app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

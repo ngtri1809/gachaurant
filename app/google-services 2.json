@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "959729224485",
+    "project_id": "gachaurant",
+    "storage_bucket": "gachaurant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959729224485:android:d1a60caf9edb1eff14e8cc",
+        "android_client_info": {
+          "package_name": "com.example.gachaurant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_t3oM9-xrg5Nib76_g5wT_HeIFBobd2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

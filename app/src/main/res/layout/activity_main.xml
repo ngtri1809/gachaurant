@@ -31,9 +31,9 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="35dp"
         android:background="@drawable/border_edittext"
-        android:drawableLeft="@drawable/icons8_email_64"
+        android:drawableLeft="@drawable/baseline_email_24"
         android:hint=" Enter your email"
-        android:textColorHint="#8082954B"
+        android:textColorHint="#806B7A3D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,10 +47,10 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="35dp"
         android:background="@drawable/border_edittext"
-        android:drawableLeft="@android:drawable/ic_lock_lock"
+        android:drawableLeft="@drawable/baseline_lock_24"
         android:hint="Enter your password"
         android:inputType="textPassword"
-        android:textColorHint="#8082954B"
+        android:textColorHint="#806B7A3D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/signUpLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -118,7 +118,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="Don't have an account? "
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/signInText"
@@ -126,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="Sign Up"
-            android:textColor="@color/link_text"
+            android:textColor="@color/text_color"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -139,6 +140,6 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
