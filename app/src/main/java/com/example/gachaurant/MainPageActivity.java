@@ -14,7 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainPageActivity extends AppCompatActivity {
     Button logOut;
     FirebaseAuth fAuth;
-    ImageButton userButton;
+    ImageButton profileButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +23,9 @@ public class MainPageActivity extends AppCompatActivity {
         //Initialize
         logOut = findViewById(R.id.logOutButton);
         fAuth = FirebaseAuth.getInstance();
-        userButton = findViewById(R.id.userButton);
+        profileButton = findViewById(R.id.profileButton);
 
-        userButton.setOnClickListener(new View.OnClickListener() {
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),UserProfileActivity.class));
