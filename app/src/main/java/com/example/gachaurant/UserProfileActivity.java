@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +27,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserProfileActivity extends AppCompatActivity {
-    EditText fullName,email,userName;
+    EditText fullName,email,userName,location;
     Button backButton,doneButton;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId;
     FirebaseUser user;
-    String originalFullName, originalUserName, originalEmail;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +42,14 @@ public class UserProfileActivity extends AppCompatActivity {
         fullName = findViewById(R.id.fullnameDB);
         email = findViewById(R.id.emailDB);
         userName = findViewById(R.id.userNameDB);
+        location = findViewById(R.id.locationDB);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userId = fAuth.getCurrentUser().getUid();
         backButton = findViewById(R.id.backButton);
         doneButton = findViewById(R.id.doneButton);
         user = fAuth.getCurrentUser();
-        originalFullName = fullName.getText().toString();
-        originalUserName = userName.getText().toString();
-        originalEmail = email.getText().toString();
-
+        progressBar = findViewById(R.id.progressBar3);
         //Fetching data from Firebase
         DocumentReference docRef = fStore.collection("users").document(userId);
         docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -59,6 +58,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 fullName.setText(value.getString("fullName"));
                 userName.setText(value.getString("userName"));
                 email.setText(value.getString("email"));
+                location.setText(value.getString("location"));
             }
         });
 
@@ -70,7 +70,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     Toast.makeText(UserProfileActivity.this, "One or Many Fields are Empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                progressBar.setVisibility(View.VISIBLE);
                     user.updateEmail(email.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
