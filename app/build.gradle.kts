@@ -33,11 +33,11 @@ android {
     }
 
     //TODO get this to work
-    /**
-    buildFeatures{
-    viewBinding true
-    }
-     **/
+
+        buildFeatures {
+            viewBinding = true
+        }
+
 }
 
 dependencies {
