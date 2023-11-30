@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Button loginButton;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
+
     //Preset code (onCreate)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,4 +90,5 @@ public class MainActivity extends AppCompatActivity {
         //finish the activity
         finish();
     }
+
 }
