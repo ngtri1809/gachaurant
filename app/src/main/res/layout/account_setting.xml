@@ -207,7 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="45dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="45dp"
                 android:backgroundTint="@color/button"
                 android:text="Log out"
