@@ -19,10 +19,6 @@
         android:theme="@style/Theme.Gachaurant"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBZPS1ufjS_iYDoCvpdOrc1fVlHLwN3LV4"/>
-
         <activity
             android:name=".UserProfileActivity"
             android:exported="false" />

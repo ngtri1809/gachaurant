@@ -93,6 +93,7 @@ public class SignUpActivity extends AppCompatActivity {
                 user.put("location", null);
                 user.put("distance", null);
                 user.put("preference", null);
+                user.put("restaurantList", null);
                 //Insert user map into database
                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

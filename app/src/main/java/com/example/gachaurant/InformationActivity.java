@@ -15,6 +15,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -26,22 +27,35 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InformationActivity extends AppCompatActivity {
     private static final String TAG = "InformationActivity";
     private static final int INITIAL_DISTANCE = 1;
-    FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 100;
+    private List<Restaurant> restaurantList;
+    FusedLocationProviderClient fusedLocationProviderClient;
     Map<String, Boolean> preference;
     Button confirmButton;
     FirebaseFirestore fStore;
@@ -53,11 +67,13 @@ public class InformationActivity extends AppCompatActivity {
     SeekBar distanceSeekBar;
     TextView distanceAmount;
     double latitude, longitude;
+    int radius;
+    String restaurantString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
-
         //Initialize variables
         confirmButton = findViewById(R.id.confirmButton);
         fStore = FirebaseFirestore.getInstance();
@@ -90,11 +106,16 @@ public class InformationActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distanceAmount.setText(String.valueOf(progress));
+                radius = progress * 1000; //in meters
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
         //When click on location
         locationImg.setOnClickListener(new View.OnClickListener() {
@@ -116,11 +137,22 @@ public class InformationActivity extends AppCompatActivity {
                 userID = fAuth.getCurrentUser().getUid();
 
                 DocumentReference documentReference = fStore.collection("users").document(userID);
+                // Convert restaurantList to a list of Maps for Firestore
+                List<Map<String, Object>> restaurantMaps = new ArrayList<>();
+                for (Restaurant restaurant : restaurantList) {
+                    Map<String, Object> restaurantMap = new HashMap<>();
+                    restaurantMap.put("name", restaurant.getName());
+                    restaurantMap.put("address", restaurant.getAddress());
+                    restaurantMap.put("latitude", restaurant.getLatitude());
+                    restaurantMap.put("longitude", restaurant.getLongitude());
+                    restaurantMaps.add(restaurantMap);
+                }
                 //Create map of user's info
                 Map<String, Object> info = new HashMap<>();
                 info.put("preference", preference);
                 info.put("location", locationEt.getText().toString().trim());
-                info.put("distance", Integer.parseInt(distanceAmount.getText().toString()));
+                info.put("distance", radius);
+                info.put("restaurantList", restaurantMaps);
                 documentReference.update(info).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -129,35 +161,107 @@ public class InformationActivity extends AppCompatActivity {
                     }
                 });
                 Toast.makeText(InformationActivity.this, "User Logged In", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(),MainPageActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
             }
         });
     }
 
     private void getLastLocation() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
-                    if(location != null){
+                    if (location != null) {
                         Geocoder geocoder = new Geocoder(InformationActivity.this, Locale.getDefault());
                         List<Address> address;
                         try {
-                            address = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1); //Get address of the user
+                            address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); //Get address of the user
                             locationEt.setText(address.get(0).getAddressLine(0)); //+ ", " + address.get(0).getLocality()
                             latitude = address.get(0).getLatitude();
                             longitude = address.get(0).getLongitude();
+                            fetchNearbyRestaurants(latitude, longitude);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
                 }
             });
-        }else {
+        } else {
             askPermission();
         }
     }
 
+    private void fetchNearbyRestaurants(double latitude, double longitude) {
+        //Init restaurant List
+        restaurantList = new ArrayList<>();
+        // Set up the Places API client
+        Places.initialize(getApplicationContext(), "AIzaSyBZPS1ufjS_iYDoCvpdOrc1fVlHLwN3LV4");
+        PlacesClient placesClient = Places.createClient(this);
+
+        // Define a location and radius for the nearby search
+        LatLng location = new LatLng(latitude, longitude);
+
+        // Create a request for nearby places (restaurants)
+        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(Collections.singletonList(Place.Field.NAME));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            return;
+        }
+        Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
+
+        // Handle the response
+        placeResponse.addOnSuccessListener(new OnSuccessListener<FindCurrentPlaceResponse>() {
+            @Override
+            public void onSuccess(FindCurrentPlaceResponse response) {
+                for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
+                    Place place = placeLikelihood.getPlace();
+                    double placeLatitude = place.getLatLng().latitude;
+                    double placeLongitude = place.getLatLng().longitude;
+                    Log.i("Place", String.format("Place '%s' has likelihood: %f", place.getName(), placeLikelihood.getLikelihood()));
+                    double distance = calculateDistance(latitude, longitude, placeLatitude, placeLongitude);
+                    // Create a Restaurant object and add it to the list
+                    if(distance <= radius){
+                        Restaurant restaurant = new Restaurant(place.getName(), place.getAddress(), place.getLatLng().latitude, place.getLatLng().longitude);
+                        restaurantList.add(restaurant);
+                    }
+                }
+            }
+        });
+
+        placeResponse.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Places API", "Error getting place likelihoods: " + e.getMessage());
+            }
+        });
+    }
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        // The radius of the Earth in meters
+        final double R = 6371000; // Earth radius in meters
+
+        // Convert latitude and longitude from degrees to radians
+        double lat1Rad = Math.toRadians(lat1);
+        double lon1Rad = Math.toRadians(lon1);
+        double lat2Rad = Math.toRadians(lat2);
+        double lon2Rad = Math.toRadians(lon2);
+
+        // Calculate the differences
+        double deltaLat = lat2Rad - lat1Rad;
+        double deltaLon = lon2Rad - lon1Rad;
+
+        // Haversine formula
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Calculate the distance
+        double distance = R * c;
+
+        return distance;
+    }
 
     private void askPermission() {
         ActivityCompat.requestPermissions(InformationActivity.this, new String[]
