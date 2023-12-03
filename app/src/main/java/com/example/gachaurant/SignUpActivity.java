@@ -90,7 +90,8 @@ public class SignUpActivity extends AppCompatActivity {
                 user.put("fullName", fullNameString);
                 user.put("email", emailString);
                 user.put("userName", userNameString);
-                user.put("Location", null);
+                user.put("location", null);
+                user.put("distance", null);
                 user.put("preference", null);
                 //Insert user map into database
                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -260,6 +260,19 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/bbqCB" />
 
+  <TextView
+      android:id="@+id/distanceTV"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="15dp"
+      android:layout_marginTop="35dp"
+      android:text="Distance you want to eat"
+      android:textColor="@color/text_color"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/locationEditText" />
+
   <EditText
       android:id="@+id/locationEditText"
       android:layout_width="0dp"
@@ -297,5 +310,43 @@
       app:layout_constraintTop_toTopOf="@+id/locationEditText"
       app:srcCompat="@drawable/baseline_location_on_24" />
 
+  <SeekBar
+      android:id="@+id/seekBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="10dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginEnd="60dp"
+      android:progressBackgroundTint="@color/button"
+      android:progressTint="@color/text_color"
+      android:thumbTint="@color/button"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/distanceTV"
+      android:max="100"/>
+
+  <TextView
+      android:id="@+id/distanceAmount"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="15"
+      android:textColor="@color/text_color"
+      android:textSize="15sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="@+id/seekBar"
+      app:layout_constraintStart_toEndOf="@+id/seekBar"
+      app:layout_constraintTop_toTopOf="@+id/seekBar" />
+  <TextView
+      android:id="@+id/unitTv"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="miles"
+      android:layout_marginLeft="2dp"
+      android:textColor="@color/text_color"
+      android:textSize="15sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="@+id/seekBar"
+      app:layout_constraintStart_toEndOf="@+id/distanceAmount"
+      app:layout_constraintTop_toTopOf="@+id/seekBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

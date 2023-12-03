@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import java.util.Map;
 
 public class InformationActivity extends AppCompatActivity {
     private static final String TAG = "InformationActivity";
+    private static final int INITIAL_DISTANCE = 1;
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 100;
     Map<String, Boolean> preference;
@@ -48,6 +50,9 @@ public class InformationActivity extends AppCompatActivity {
     ProgressBar progressBar;
     EditText locationEt;
     ImageView locationImg;
+    SeekBar distanceSeekBar;
+    TextView distanceAmount;
+    double latitude, longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +66,11 @@ public class InformationActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar2);
         locationEt = findViewById(R.id.locationEditText);
         locationImg = findViewById(R.id.locationImage);
+        distanceSeekBar = findViewById(R.id.seekBar);
+        distanceAmount = findViewById(R.id.distanceAmount);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        distanceSeekBar.setProgress(INITIAL_DISTANCE);
+        distanceAmount.setText(String.valueOf(INITIAL_DISTANCE));
         //Create an array of all check box
         int[] checkBoxIds = {
                 R.id.vietnameseCB,
@@ -77,6 +86,16 @@ public class InformationActivity extends AppCompatActivity {
                 R.id.fastFoodCB,
                 R.id.italianCB
         };
+        distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                distanceAmount.setText(String.valueOf(progress));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
         //When click on location
         locationImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +120,7 @@ public class InformationActivity extends AppCompatActivity {
                 Map<String, Object> info = new HashMap<>();
                 info.put("preference", preference);
                 info.put("location", locationEt.getText().toString().trim());
+                info.put("distance", Integer.parseInt(distanceAmount.getText().toString()));
                 documentReference.update(info).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -125,6 +145,8 @@ public class InformationActivity extends AppCompatActivity {
                         try {
                             address = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1); //Get address of the user
                             locationEt.setText(address.get(0).getAddressLine(0)); //+ ", " + address.get(0).getLocality()
+                            latitude = address.get(0).getLatitude();
+                            longitude = address.get(0).getLongitude();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -135,6 +157,7 @@ public class InformationActivity extends AppCompatActivity {
             askPermission();
         }
     }
+
 
     private void askPermission() {
         ActivityCompat.requestPermissions(InformationActivity.this, new String[]
