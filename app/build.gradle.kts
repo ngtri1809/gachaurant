@@ -1,6 +1,8 @@
+import java.util.Properties
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -9,11 +11,13 @@ android {
 
     defaultConfig {
         applicationId = "com.example.gachaurant"
-        minSdk = 31
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,7 +41,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation("com.google.firebase:firebase-firestore:24.9.1")
 
@@ -47,4 +51,8 @@ dependencies {
 
     implementation("com.google.android.libraries.places:places:3.3.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+}
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "local.properties"
 }

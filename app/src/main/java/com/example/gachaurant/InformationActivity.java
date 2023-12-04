@@ -15,7 +15,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -25,6 +24,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gachaurant.restaurantPackage.Restaurant;
+import com.example.gachaurant.restaurantPackage.RestaurantCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,12 +49,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class InformationActivity extends AppCompatActivity {
     private static final String TAG = "InformationActivity";
     private static final int INITIAL_DISTANCE = 1;
     private static final int REQUEST_CODE = 100;
+    final String apiKey = BuildConfig.API_KEY;
     private List<Restaurant> restaurantList;
     FusedLocationProviderClient fusedLocationProviderClient;
     Map<String, Boolean> preference;
@@ -137,7 +138,12 @@ public class InformationActivity extends AppCompatActivity {
                 userID = fAuth.getCurrentUser().getUid();
 
                 DocumentReference documentReference = fStore.collection("users").document(userID);
-                // Convert restaurantList to a list of Maps for Firestore
+                fetchNearbyRestaurants(latitude, longitude, new RestaurantCallback() {
+                    @Override
+                    public void onRestaurantListUpdated(List<Restaurant> updatedList) {
+                        restaurantList = updatedList;
+                    }
+                });
                 List<Map<String, Object>> restaurantMaps = new ArrayList<>();
                 for (Restaurant restaurant : restaurantList) {
                     Map<String, Object> restaurantMap = new HashMap<>();
@@ -179,7 +185,6 @@ public class InformationActivity extends AppCompatActivity {
                             locationEt.setText(address.get(0).getAddressLine(0)); //+ ", " + address.get(0).getLocality()
                             latitude = address.get(0).getLatitude();
                             longitude = address.get(0).getLongitude();
-                            fetchNearbyRestaurants(latitude, longitude);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -191,11 +196,11 @@ public class InformationActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchNearbyRestaurants(double latitude, double longitude) {
+    private void fetchNearbyRestaurants(double latitude, double longitude, RestaurantCallback callback) {
         //Init restaurant List
         restaurantList = new ArrayList<>();
         // Set up the Places API client
-        Places.initialize(getApplicationContext(), "AIzaSyBZPS1ufjS_iYDoCvpdOrc1fVlHLwN3LV4");
+        Places.initializeWithNewPlacesApiEnabled(getApplicationContext(), apiKey);
         PlacesClient placesClient = Places.createClient(this);
 
         // Define a location and radius for the nearby search
@@ -214,6 +219,7 @@ public class InformationActivity extends AppCompatActivity {
         placeResponse.addOnSuccessListener(new OnSuccessListener<FindCurrentPlaceResponse>() {
             @Override
             public void onSuccess(FindCurrentPlaceResponse response) {
+
                 for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
                     Place place = placeLikelihood.getPlace();
                     double placeLatitude = place.getLatLng().latitude;
@@ -226,9 +232,10 @@ public class InformationActivity extends AppCompatActivity {
                         restaurantList.add(restaurant);
                     }
                 }
+                // Notify the callback with the updated restaurantList
+                callback.onRestaurantListUpdated(restaurantList);
             }
         });
-
         placeResponse.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -281,3 +288,4 @@ public class InformationActivity extends AppCompatActivity {
     }
 
 }
+

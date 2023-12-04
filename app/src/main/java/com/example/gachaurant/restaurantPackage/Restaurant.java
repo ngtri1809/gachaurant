@@ -1,4 +1,4 @@
-package com.example.gachaurant;
+package com.example.gachaurant.restaurantPackage;
 
 public class Restaurant {
     private String name;
