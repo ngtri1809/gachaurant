@@ -12,10 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
-import com.example.gachaurant.databinding.ActivityMainBinding;
-
 import com.example.gachaurant.databinding.ActivityMainPageBinding;
-import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainPageActivity extends AppCompatActivity {
@@ -38,8 +35,8 @@ public class MainPageActivity extends AppCompatActivity {
                 replaceFragment(new FriendsFragment());
             } else if (itemId == R.id.profile) {
                 replaceFragment(new ProfileFragment());
-            }else if (itemId == R.id.list) {
-                replaceFragment(new ListFragment());
+            } else if (itemId == R.id.list) {
+                replaceFragment(new TListFragment());
             } else if (itemId == R.id.settings) {
                 replaceFragment(new SettingsFragment());
             } else if (itemId == R.id.home) {

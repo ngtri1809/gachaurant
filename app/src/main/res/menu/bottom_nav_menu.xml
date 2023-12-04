@@ -9,7 +9,7 @@
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="friends"
+        android:title="Friends"
         android:icon="@drawable/group2"
         android:id="@+id/friends"/>
     <item
