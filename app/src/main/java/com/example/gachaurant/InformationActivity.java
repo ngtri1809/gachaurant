@@ -30,6 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -65,6 +66,7 @@ public class InformationActivity extends AppCompatActivity {
     ProgressBar progressBar;
     EditText locationEt;
     ImageView locationImg;
+
     SeekBar distanceSeekBar;
     TextView distanceAmount;
     double latitude, longitude;
@@ -86,8 +88,10 @@ public class InformationActivity extends AppCompatActivity {
         distanceSeekBar = findViewById(R.id.seekBar);
         distanceAmount = findViewById(R.id.distanceAmount);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         distanceSeekBar.setProgress(INITIAL_DISTANCE);
         distanceAmount.setText(String.valueOf(INITIAL_DISTANCE));
+
         //Create an array of all check box
         int[] checkBoxIds = {
                 R.id.vietnameseCB,
@@ -191,10 +195,12 @@ public class InformationActivity extends AppCompatActivity {
                     }
                 }
             });
-        } else {
+        }else {
             askPermission();
         }
     }
+
+
 
     private void fetchNearbyRestaurants(double latitude, double longitude, RestaurantCallback callback) {
         //Init restaurant List
@@ -269,7 +275,6 @@ public class InformationActivity extends AppCompatActivity {
 
         return distance;
     }
-
     private void askPermission() {
         ActivityCompat.requestPermissions(InformationActivity.this, new String[]
                 {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
@@ -288,4 +293,5 @@ public class InformationActivity extends AppCompatActivity {
     }
 
 }
+
 

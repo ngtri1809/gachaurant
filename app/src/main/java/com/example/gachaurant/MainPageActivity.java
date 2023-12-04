@@ -1,44 +1,69 @@
 package com.example.gachaurant;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
+
+import com.example.gachaurant.databinding.ActivityMainPageBinding;
+
 
 public class MainPageActivity extends AppCompatActivity {
-    Button logOut;
-    FirebaseAuth fAuth;
-    ImageButton userButton;
+
+    ActivityMainPageBinding binding;
+    //ImageButton profileButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
-        //Initialize
-        logOut = findViewById(R.id.logOutButton);
-        fAuth = FirebaseAuth.getInstance();
-        userButton = findViewById(R.id.userButton);
+        binding = ActivityMainPageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
 
-        userButton.setOnClickListener(new View.OnClickListener() {
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            int itemId = item.getItemId();
+            if (itemId == R.id.friends) {
+                replaceFragment(new FriendsFragment());
+            } else if (itemId == R.id.profile) {
+                replaceFragment(new ProfileFragment());
+            } else if (itemId == R.id.list) {
+                replaceFragment(new TListFragment());
+            } else if (itemId == R.id.settings) {
+                replaceFragment(new SettingsFragment());
+            } else if (itemId == R.id.home) {
+                replaceFragment(new HomeFragment());
+            }
+
+            return true;
+        });
+
+        //setContentView(R.layout.activity_main_page);
+        //Initialize
+       //profileButton = findViewById(R.id.profileButton);
+
+       /** profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),UserProfileActivity.class));
             }
         });
+        **/
         //Go to User Profile
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fAuth.signOut();
-                Toast.makeText(MainPageActivity.this, "User Logged Out", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-            }
-        });
+    }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+
     }
 }

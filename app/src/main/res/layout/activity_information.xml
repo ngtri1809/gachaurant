@@ -348,5 +348,4 @@
       app:layout_constraintBottom_toBottomOf="@+id/seekBar"
       app:layout_constraintStart_toEndOf="@+id/distanceAmount"
       app:layout_constraintTop_toTopOf="@+id/seekBar" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
