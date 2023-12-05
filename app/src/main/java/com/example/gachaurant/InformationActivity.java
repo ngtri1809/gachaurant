@@ -15,6 +15,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -111,7 +112,7 @@ public class InformationActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distanceAmount.setText(String.valueOf(progress));
-                radius = progress * 1000; //in meters
+                radius = progress * 2000; //in meters
             }
 
             @Override
@@ -142,12 +143,7 @@ public class InformationActivity extends AppCompatActivity {
                 userID = fAuth.getCurrentUser().getUid();
 
                 DocumentReference documentReference = fStore.collection("users").document(userID);
-                fetchNearbyRestaurants(latitude, longitude, new RestaurantCallback() {
-                    @Override
-                    public void onRestaurantListUpdated(List<Restaurant> updatedList) {
-                        restaurantList = updatedList;
-                    }
-                });
+                fetchNearbyRestaurants(latitude, longitude);
                 List<Map<String, Object>> restaurantMaps = new ArrayList<>();
                 for (Restaurant restaurant : restaurantList) {
                     Map<String, Object> restaurantMap = new HashMap<>();
@@ -194,6 +190,12 @@ public class InformationActivity extends AppCompatActivity {
                         }
                     }
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Handle the failure to get the last location
+                    Toast.makeText(InformationActivity.this, "Failed to get last location: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             });
         }else {
             askPermission();
@@ -202,7 +204,7 @@ public class InformationActivity extends AppCompatActivity {
 
 
 
-    private void fetchNearbyRestaurants(double latitude, double longitude, RestaurantCallback callback) {
+    private void fetchNearbyRestaurants(double latitude, double longitude) {
         //Init restaurant List
         restaurantList = new ArrayList<>();
         // Set up the Places API client
@@ -215,31 +217,37 @@ public class InformationActivity extends AppCompatActivity {
         // Create a request for nearby places (restaurants)
         FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(Collections.singletonList(Place.Field.NAME));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
+            askPermission();
             return;
         }
         Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
-
         // Handle the response
         placeResponse.addOnSuccessListener(new OnSuccessListener<FindCurrentPlaceResponse>() {
             @Override
             public void onSuccess(FindCurrentPlaceResponse response) {
-
                 for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
                     Place place = placeLikelihood.getPlace();
-                    double placeLatitude = place.getLatLng().latitude;
-                    double placeLongitude = place.getLatLng().longitude;
-                    Log.i("Place", String.format("Place '%s' has likelihood: %f", place.getName(), placeLikelihood.getLikelihood()));
-                    double distance = calculateDistance(latitude, longitude, placeLatitude, placeLongitude);
-                    // Create a Restaurant object and add it to the list
-                    if(distance <= radius){
-                        Restaurant restaurant = new Restaurant(place.getName(), place.getAddress(), place.getLatLng().latitude, place.getLatLng().longitude);
-                        restaurantList.add(restaurant);
+                    double placeLatitude;
+                    double placeLongitude;
+
+                    if (place.getLatLng() != null) {
+                        placeLatitude = place.getLatLng().latitude;
+                        placeLongitude = place.getLatLng().longitude;
+                        Log.i("Place", String.format("Place '%s' has likelihood: %f", place.getName(), placeLikelihood.getLikelihood()));
+                        double distance = calculateDistance(latitude, longitude, placeLatitude, placeLongitude);
+                        // Create a Restaurant object and add it to the list
+                        if(distance <= radius){
+                            Restaurant restaurant = new Restaurant(place.getName(), place.getAddress(), place.getLatLng().latitude, place.getLatLng().longitude);
+                            restaurantList.add(restaurant);
+                        }
+                    } else {
+                        // Handle the case where the place doesn't have a defined latitude and longitude
+                        Log.w("Place", String.format("Place '%s' doesn't have a defined latitude and longitude.", place.getName()));
+                        continue;  // Skip to the next place
                     }
+
                 }
-                // Notify the callback with the updated restaurantList
-                callback.onRestaurantListUpdated(restaurantList);
+                Log.d(TAG, "Nearby Restaurants: " + restaurantList);
             }
         });
         placeResponse.addOnFailureListener(new OnFailureListener() {
