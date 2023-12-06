@@ -45,6 +45,24 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        preferencesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Handle the click for "My Account" button within the fragment
+                Intent intent = new Intent(getActivity(), InformationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Handle the click for "My Account" button within the fragment
+                Intent intent = new Intent(getActivity(), ChangePassword.class);
+                startActivity(intent);
+            }
+        });
+
             fAuth = FirebaseAuth.getInstance();
 
             logOutBtn.setOnClickListener(new View.OnClickListener() {
