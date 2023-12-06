@@ -19,8 +19,6 @@ public class ChangePassword extends AppCompatActivity {
     private EditText currentPasswordEditText, newPasswordEditText, confirmPasswordEditText;
     Button saveButton;
     Button backBtn;
-
-
     FirebaseAuth fAuth;
 
     @Override

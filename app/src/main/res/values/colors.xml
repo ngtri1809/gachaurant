@@ -9,5 +9,7 @@
     <color name="link_text">#221FCD</color>
     <color name="text_box">#EFD345</color>
     <color name="text_color">#6B7A3D</color>
+    <color name="bg_color">#37D5C453</color>
+
 
 </resources>

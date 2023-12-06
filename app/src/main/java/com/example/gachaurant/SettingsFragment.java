@@ -63,6 +63,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        groupSettingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GroupSetting.class);
+                startActivity(intent);
+            }
+        });
+
             fAuth = FirebaseAuth.getInstance();
 
             logOutBtn.setOnClickListener(new View.OnClickListener() {
