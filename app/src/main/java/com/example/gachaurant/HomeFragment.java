@@ -36,8 +36,6 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    FirebaseAuth fAuth;
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -72,20 +70,4 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        fAuth = FirebaseAuth.getInstance();
-
-        binding.logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fAuth.signOut();
-                Toast.makeText(getContext(), "User Logged Out", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(), MainActivity.class));
-                getActivity().finish();
-            }
-        });
-
-    }
 }
