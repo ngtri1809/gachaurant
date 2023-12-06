@@ -45,8 +45,15 @@
             android:name=".ChangePassword"
             android:exported="false"/>
         <activity
+            android:name=".CheckIn"
+            android:exported="false"/>
+        <activity
             android:name=".GroupSetting"
             android:exported="false"/>
+        <activity
+            android:name=".CreateGroup" />
+        <activity
+            android:name=".SearchFriends" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

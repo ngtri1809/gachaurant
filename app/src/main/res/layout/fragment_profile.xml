@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/replaceUsername"
             android:layout_marginTop="10dp"
-            android:text="level 0"
+            android:text="Level 0"
             android:textAlignment="center"
             android:textSize="18sp" />
 
