@@ -95,6 +95,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
+
+
         //Back button
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,9 +104,12 @@ public class UserProfileActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+
     }
     private boolean isEditTextEdited(EditText editText, String originalValue) {
         return !editText.getText().toString().equals(originalValue);
     }
+
 
 }
