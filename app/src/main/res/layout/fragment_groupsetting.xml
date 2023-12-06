@@ -52,7 +52,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/buttonWithImage"
+            android:id="@+id/createGroup"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="Create Group"
