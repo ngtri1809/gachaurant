@@ -4,21 +4,23 @@ public class Restaurant {
     private String name;
     private double latitude;
     private double longitude;
-    private String address;
+    private double rating;
+    private String type;
 
-    public Restaurant(String name,String address, double latitude, double longitude) {
+    public Restaurant(String name, double rating, String type, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.address = address;
+        this.rating = rating;
+        this.type = type;
     }
 
-    public String getAddress() {
-        return address;
+    public double getRating() {
+        return rating;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public String getType() {
+        return type;
     }
 
     public String getName() {
