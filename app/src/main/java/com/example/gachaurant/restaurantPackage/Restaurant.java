@@ -6,13 +6,19 @@ public class Restaurant {
     private double longitude;
     private double rating;
     private String type;
+    private String address;
 
-    public Restaurant(String name, double rating, String type, double latitude, double longitude) {
+    public Restaurant(String name, double rating, String address, String type, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.rating = rating;
         this.type = type;
+        this.address =  address;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public double getRating() {

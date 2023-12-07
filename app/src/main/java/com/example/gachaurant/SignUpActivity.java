@@ -48,12 +48,12 @@ public class SignUpActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         signIn = findViewById(R.id.signInLayout);
 
-        //If user hasn't logged out lead user to the main page
-        if(fAuth.getCurrentUser() != null){
-            Toast.makeText(SignUpActivity.this,"User hasn't logged out",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
-            finish();
-        }
+//        //If user hasn't logged out lead user to the main page
+//        if(fAuth.getCurrentUser() != null){
+//            Toast.makeText(SignUpActivity.this,"User hasn't logged out",Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+//            finish();
+//        }
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
                 user.put("distance", null);
                 user.put("preference", null);
                 user.put("restaurantList", null);
+                user.put("restaurantInventory", null);
                 //Insert user map into database
                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

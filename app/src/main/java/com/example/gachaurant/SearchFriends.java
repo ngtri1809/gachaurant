@@ -1,8 +1,10 @@
 package com.example.gachaurant;
 
+import android.accounts.AccountManagerFuture;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +36,7 @@ public class SearchFriends extends AppCompatActivity {
 
         // Initialize views
         searchEditText = findViewById(R.id.searchEditText);
-        resultTextView = findViewById(R.id.resultTextView);
+        resultTextView = findViewById(R.id.resultLayout);
         backButton = findViewById(R.id.backBtn3);
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -55,40 +57,45 @@ public class SearchFriends extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 // Perform search when text changes
-                searchFriends(editable.toString());
+                searchUsers(editable.toString());
             }
         });
     }
 
-    private void searchFriends(String query) {
+    private void searchUsers(String query) {
+        Log.d("Search Query", "Query: " + query);
+
         // Clear previous search results
         resultTextView.setText("");
 
         // Query Firestore for users with usernames containing the query
         CollectionReference usersCollection = db.collection("users");
 
-        usersCollection.whereArrayContains("usernames", query.toLowerCase())
+        usersCollection.whereEqualTo("userName", query.toLowerCase())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d("Firestore Query", "Query successful: " + task.isSuccessful());
                         if (task.isSuccessful()) {
                             List<String> searchResults = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Extract the username from the document
-                                String username = document.getString("username");
+                                String username = document.getString("userName");
                                 searchResults.add(username);
                             }
 
                             // Update the UI with search results
                             updateSearchResults(searchResults);
                         } else {
-                            // Handle failures
+                            Log.e("Firestore Query", "Error: " + task.getException().getMessage());
                             resultTextView.setText("Error: " + task.getException().getMessage());
                         }
                     }
                 });
     }
+
+
 
     private void updateSearchResults(List<String> searchResults) {
         // Display search results in the resultTextView

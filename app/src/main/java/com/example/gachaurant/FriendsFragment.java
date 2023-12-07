@@ -1,19 +1,18 @@
 package com.example.gachaurant;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.gachaurant.SearchFriends;
 
 public class FriendsFragment extends Fragment {
     ImageButton searchFriendsBtn;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -30,7 +29,6 @@ public class FriendsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
 
         return view;
     }

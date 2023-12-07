@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <Button
             android:id="@+id/backBtn3"
             android:layout_width="65dp"
@@ -40,7 +39,7 @@
 
         <!-- Display the search result -->
         <TextView
-            android:id="@+id/resultTextView"
+            android:id="@+id/resultLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -48,5 +47,15 @@
             android:text=""
             android:textSize="18sp" />
 
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationX="150dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/button"
+            android:text="Add"
+            android:textColor="@color/text_box"
+            android:id="@+id/addButton"
+            /> -->
     </LinearLayout>
 </FrameLayout>

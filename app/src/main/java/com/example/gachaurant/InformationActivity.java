@@ -149,7 +149,6 @@ public class InformationActivity extends AppCompatActivity {
             restaurantList = new ArrayList<>();
             fetchNearbyPlaces(latitude, longitude, restaurantList);
 
-
             Toast.makeText(InformationActivity.this, "User Logged In", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
         });
@@ -251,8 +250,11 @@ public class InformationActivity extends AppCompatActivity {
                 String type = placeObject.getString("types");
                 double lat = placeObject.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                 double lng = placeObject.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
-
-                Restaurant restaurant = new Restaurant(name, rating, type, lat, lng);
+                String address = "";
+                if (placeObject.has("vicinity")) {
+                    address = placeObject.getString("vicinity");
+                }
+                Restaurant restaurant = new Restaurant(name, rating, address, type, lat, lng);
                 Log.d(TAG, "restaurantList: " + restaurantList.toString());
                 restaurantList.add(restaurant);
             }
@@ -266,7 +268,7 @@ public class InformationActivity extends AppCompatActivity {
         // Build the URL for nearby places
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + latitude + "," + longitude +
-                "&radius=" + radius +
+                "&radius=" + Integer.toString(radius) +
                 "&type=restaurant" +
                 "&key=" + apiKey;
 
@@ -281,6 +283,7 @@ public class InformationActivity extends AppCompatActivity {
             Map<String, Object> restaurantMap = new HashMap<>();
             restaurantMap.put("name", restaurant.getName());
             restaurantMap.put("rating", restaurant.getRating());
+            restaurantMap.put("address", restaurant.getAddress());
             restaurantMap.put("type", restaurant.getType());
             restaurantMap.put("latitude", restaurant.getLatitude());
             restaurantMap.put("longitude", restaurant.getLongitude());
@@ -304,5 +307,3 @@ public class InformationActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
     }
 }
-
-
