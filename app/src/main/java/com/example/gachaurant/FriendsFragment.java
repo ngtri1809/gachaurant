@@ -26,7 +26,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Handle the click event, e.g., navigate to a search activity
-                Intent intent = new Intent(getActivity(), SearchFriends.class);
+                Intent intent = new Intent(requireContext(), SearchFriends.class);
                 startActivity(intent);
             }
         });

@@ -28,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageButton3"
         android:layout_marginLeft="10dp"
-    android:layout_alignTop="@id/imageButton3"
-    app:srcCompat="@drawable/image_35" />
+        android:layout_alignTop="@id/imageButton3"
+        app:srcCompat="@drawable/image_35" />
 
     <ImageButton
         android:id="@+id/imageButton6"
@@ -66,7 +66,7 @@
         android:layout_centerVertical="true"
         android:translationY= "-25dp"
         android:text="Friends" />
-        />
+    />
 
     <ImageButton
         android:id="@+id/imageButton10"
