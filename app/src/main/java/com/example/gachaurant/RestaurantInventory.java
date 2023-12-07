@@ -99,7 +99,7 @@ public class RestaurantInventory extends AppCompatActivity {
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        layoutParams.setMargins(15, 20, 15, 0); // Adjust margins as needed
+        layoutParams.setMargins(15, 10, 15, 20); // Adjust margins as needed
         relativeLayout.setLayoutParams(layoutParams);
         relativeLayout.setBackgroundResource(R.drawable.rounded_background); // Set background drawable
 
@@ -128,7 +128,7 @@ public class RestaurantInventory extends AppCompatActivity {
         );
         nameParams.addRule(RelativeLayout.END_OF, imageView.getId()); // Position to the right of the ImageView
         nameParams.addRule(RelativeLayout.BELOW, imageView.getId()); // Position below the ImageView
-        nameParams.setMargins(0, 10, 0, 0); // Adjust margins as needed
+        nameParams.setMargins(0, 0, 0, 20); // Adjust margins as needed
         restaurantNameTextView.setLayoutParams(nameParams);
 
         // Create and configure TextView for address
@@ -141,14 +141,26 @@ public class RestaurantInventory extends AppCompatActivity {
         );
         addressParams.addRule(RelativeLayout.END_OF, imageView.getId()); // Position to the right of the ImageView
         addressParams.addRule(RelativeLayout.BELOW, restaurantNameTextView.getId()); // Position below the restaurant name TextView
-        addressParams.setMargins(0, 4, 0, 0); // Adjust margins as needed
+        addressParams.setMargins(0, 5, 0, 0); // Adjust margins as needed
         addressTextView.setLayoutParams(addressParams);
+        // Create and configure TextView for rating
+        TextView ratingTextView = new TextView(this);
+        ratingTextView.setId(View.generateViewId()); // Set a unique ID
+        ratingTextView.setText("Rating: " + res.getRating()); // Set the restaurant rating
+        RelativeLayout.LayoutParams ratingParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        ratingParams.addRule(RelativeLayout.END_OF, imageView.getId()); // Position to the right of the ImageView
+        ratingParams.addRule(RelativeLayout.BELOW, addressTextView.getId()); // Position below the address TextView
+        ratingParams.setMargins(0, 5, 0, 0); // Adjust margins as needed
+        ratingTextView.setLayoutParams(ratingParams);
 
         // Add the ImageView and TextViews to the RelativeLayout
         relativeLayout.addView(imageView);
         relativeLayout.addView(restaurantNameTextView);
         relativeLayout.addView(addressTextView);
-
+        relativeLayout.addView(ratingTextView);
         // Add the RelativeLayout to the parent LinearLayout
         parentLayout.addView(relativeLayout);
     }
