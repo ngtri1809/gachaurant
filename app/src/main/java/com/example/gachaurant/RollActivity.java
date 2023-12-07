@@ -84,11 +84,7 @@ public class RollActivity extends AppCompatActivity {
                         double longitude = (double) restaurantMap.get("longitude");
                         String address = (String) restaurantMap.get("address");
                         Restaurant restaurant = new Restaurant(name, rating, address, type, latitude, longitude);
-                        if(restaurantInventory.contains(restaurant)){
-                            //Level implementation
-                        }
-                        else
-                            restaurantInventory.add(restaurant);
+                        restaurantInventory.add(restaurant);
                         Log.d(TAG, "restaurantInventory: " + restaurantInventory.toString());
                     }
                 }
@@ -98,9 +94,15 @@ public class RollActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Restaurant res = selectRandomRestaurant(restaurantList);
-                restaurantInventory.add(res);
-                updateRestaurantInventoryInFirebase();
-                Toast.makeText(RollActivity.this,"You rolled" + res.getName(),Toast.LENGTH_SHORT);
+                if(restaurantInventory.contains(res)){
+                    //Level implementation
+                    Toast.makeText(RollActivity.this,"You rolled a duplicated restaurant: " + res.getName(),Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    restaurantInventory.add(res);
+                    Toast.makeText(RollActivity.this,"You rolled" + res.getName(),Toast.LENGTH_SHORT).show();
+                    updateRestaurantInventoryInFirebase();
+                }
             }
         });
         homeButton.setOnClickListener(new View.OnClickListener() {
