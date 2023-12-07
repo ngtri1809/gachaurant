@@ -244,7 +244,6 @@ public class InformationActivity extends AppCompatActivity {
 
             for (int i = 0; i < resultsArray.length(); i++) {
                 JSONObject placeObject = resultsArray.getJSONObject(i);
-
                 String name = placeObject.getString("name");
                 double rating = placeObject.optDouble("rating", 0.0);
                 String type = placeObject.getString("types");

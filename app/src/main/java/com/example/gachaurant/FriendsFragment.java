@@ -17,7 +17,6 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
-
         searchFriendsBtn = view.findViewById(R.id.searchfriends);
 
         // Set click listener for the searchFriendsBtn

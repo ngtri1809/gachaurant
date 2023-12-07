@@ -78,6 +78,19 @@
             android:layout_marginEnd="15dp"
             android:background="@drawable/rounded_button"
             android:drawableLeft="@mipmap/small_reward_foreground"/>
+        <Button
+            android:id="@+id/restaurantInventory"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="Inventory"
+            android:textSize="23dp"
+            android:textColor="@color/black"
+            android:textAlignment="viewStart"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/rounded_button"
+            android:drawableLeft="@mipmap/restaurant_foreground"/>
 
     </LinearLayout>
 

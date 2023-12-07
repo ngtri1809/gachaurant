@@ -5,28 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".SelectedResturant">
+    tools:context=".RestaurantInventory">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/homeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/button"
+                android:text="Home"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/settingIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:src="@mipmap/restaurant_foreground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/settingIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:src="@mipmap/restaurant_foreground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/accountSetting"
@@ -39,256 +48,16 @@
             android:textStyle="bold" />
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_background"
-            >
-
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/parentLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/restaurant_foreground"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp" />
-
-            <TextView
-                android:id="@+id/restaurantName1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/image1"
-                android:layout_marginTop="10dp"
-                android:text="Restaurant 1"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/address1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantName1"
-                android:layout_toEndOf="@id/image1"
-                android:layout_marginTop="4dp"
-                android:text="123 1st Ave, San Jose CA 94055"
-                android:textSize="16sp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_background"
-            >
-
-            <ImageView
-                android:id="@+id/image2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/restaurant_foreground"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp" />
-
-            <TextView
-                android:id="@+id/restaurantName2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/image2"
-                android:layout_marginTop="10dp"
-                android:text="Restaurant 2"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/address2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantName2"
-                android:layout_toEndOf="@id/image2"
-                android:layout_alignStart="@id/restaurantName2"
-                android:layout_marginTop="4dp"
-                android:text="123 1st Ave, San Jose CA 94055"
-                android:textSize="16sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_background"
-            >
-
-            <ImageView
-                android:id="@+id/image3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/restaurant_foreground"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp" />
-
-            <TextView
-                android:id="@+id/restaurantName3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/image3"
-                android:layout_marginTop="10dp"
-                android:text="Restaurant 3"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/address3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantName3"
-                android:layout_toEndOf="@id/image3"
-                android:layout_alignStart="@id/restaurantName3"
-                android:layout_marginTop="4dp"
-                android:text="123 1st Ave, San Jose CA 94055"
-                android:textSize="16sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_background"
-            >
-
-            <ImageView
-                android:id="@+id/image4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/restaurant_foreground"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp" />
-
-            <TextView
-                android:id="@+id/restaurantName4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/image4"
-                android:layout_marginTop="10dp"
-                android:text="Restaurant 4"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/address4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantName4"
-                android:layout_toEndOf="@id/image4"
-                android:layout_alignStart="@id/restaurantName4"
-                android:layout_marginTop="4dp"
-                android:text="123 1st Ave, San Jose CA 94055"
-                android:textSize="16sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_background"
-            >
-
-            <ImageView
-                android:id="@+id/image5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/restaurant_foreground"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp" />
-
-            <TextView
-                android:id="@+id/restaurantName5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/image5"
-                android:layout_marginTop="10dp"
-                android:text="Restaurant 5"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/address5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantName5"
-                android:layout_toEndOf="@id/image5"
-                android:layout_alignStart="@id/restaurantName5"
-                android:layout_marginTop="4dp"
-                android:text="123 1st Ave, San Jose CA 94055"
-                android:textSize="16sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_background"
-            >
-
-            <ImageView
-                android:id="@+id/image6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/restaurant_foreground"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp" />
-
-            <TextView
-                android:id="@+id/restaurantName6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/image6"
-                android:layout_marginTop="10dp"
-                android:text="Restaurant 6"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/textLine2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantName6"
-                android:layout_toEndOf="@id/image6"
-                android:layout_alignStart="@id/restaurantName6"
-                android:layout_marginTop="4dp"
-                android:text="123 1st Ave, San Jose CA 94055"
-                android:textSize="16sp" />
-        </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+                android:orientation="vertical"/>
+        </ScrollView>
 
 
     </LinearLayout>

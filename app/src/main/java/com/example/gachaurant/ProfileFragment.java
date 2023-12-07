@@ -11,15 +11,14 @@ import android.widget.Button;
 
 public class ProfileFragment extends Fragment {
 
-    Button checkInBtn;
-
+    Button checkInBtn, inventoryBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Find the buttons by their IDs in the fragment's view
         checkInBtn = view.findViewById(R.id.checkin);
-
+        inventoryBtn = view.findViewById(R.id.restaurantInventory);
         // Set click listeners for each button
         checkInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,7 +28,14 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        inventoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Handle the click for "My Account" button within the fragment
+                Intent intent = new Intent(getActivity(), RestaurantInventory.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 }
