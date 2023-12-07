@@ -1,5 +1,6 @@
 package com.example.gachaurant;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import com.example.gachaurant.SearchFriends;
 
 public class FriendsFragment extends Fragment {
     ImageButton searchFriendsBtn;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Handle the click event, e.g., navigate to a search activity
-                Intent intent = new Intent(getActivity(), SearchFriends.class);
+                Intent intent = new Intent(requireActivity(), SearchFriends.class);
                 startActivity(intent);
             }
         });
