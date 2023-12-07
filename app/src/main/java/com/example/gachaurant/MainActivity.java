@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         loginButton = findViewById(R.id.loginButton);
 
-        //If user hasn't logged out lead user to the main page
+//        If user hasn't logged out lead user to the main page
         if(fAuth.getCurrentUser() != null){
             Toast.makeText(MainActivity.this,"User hasn't logged out",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainPageActivity.class));

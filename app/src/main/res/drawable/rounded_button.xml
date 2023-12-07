@@ -1,0 +1,35 @@
+<!-- res/drawable/rounded_button.xml
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#4AECDF70" />
+    <corners android:radius="10dp" />
+</shape>
+-->
+
+<!-- res/drawable/button_hover_effect.xml -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Normal state -->
+    <item android:state_enabled="true" android:state_pressed="false">
+        <shape>
+            <solid android:color="#4AECDF70" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+    <!-- Pressed state (hover effect) -->
+    <item android:state_enabled="true" android:state_pressed="true">
+        <shape>
+            <solid android:color="#7AE4BD50" /> <!-- Adjust the color for the hover effect -->
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+    <!-- Disabled state -->
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="#B0B0B0" /> <!-- Adjust the color for the disabled state -->
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+</selector>
+
+

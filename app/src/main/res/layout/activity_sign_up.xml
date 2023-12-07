@@ -179,13 +179,14 @@
             android:textColor="@color/text_color"
             android:textStyle="bold"/>
 
+        <!--change: update 'sign in' text color-->
         <TextView
             android:id="@+id/signInText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="Sign In"
-            android:textColor="@color/text_color"
+            android:textColor="@color/link_text"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -195,7 +196,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:text="Welcome to Gachaurant"
-        android:textColor="@color/text_color"
+        android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

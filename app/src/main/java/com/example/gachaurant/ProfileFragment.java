@@ -1,21 +1,18 @@
 package com.example.gachaurant;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,11 +66,35 @@ public class ProfileFragment extends Fragment {
 
     }
 
+
+
+
+    Button checkInBtn, inventoryBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        // Find the buttons by their IDs in the fragment's view
+        checkInBtn = view.findViewById(R.id.buttonCheckIn);
+        //inventoryBtn = view.findViewById(R.id.restaurantInventory);
+        // Set click listeners for each button
+//        checkInBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Handle the click for "My Account" button within the fragment
+//                Intent intent = new Intent(getActivity(), CheckIn.class);
+//                startActivity(intent);
+//            }
+//        });
+//        inventoryBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Handle the click for "My Account" button within the fragment
+//                Intent intent = new Intent(getActivity(), RestaurantInventory.class);
+//                startActivity(intent);
+//            }
+//        });
+        return view;
     }
 
     @Override

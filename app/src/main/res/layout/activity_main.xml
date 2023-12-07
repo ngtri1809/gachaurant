@@ -90,18 +90,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/forgotPasswordText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Forgot your password?"
-        android:textStyle="bold"
-        android:textColor="@color/text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
-
     <LinearLayout
         android:id="@+id/signUpLayout"
         android:layout_width="wrap_content"
@@ -110,8 +98,9 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordText">
+        app:layout_constraintTop_toBottomOf="@+id/loginButton">
 
+        <!--change: delete forgot password-->
         <TextView
             android:id="@+id/AlreadyHaveAnAccount"
             android:layout_width="wrap_content"
@@ -121,13 +110,14 @@
             android:textColor="@color/text_color"
             android:textStyle="bold"/>
 
+        <!--change: update 'Signup' text color like a link-->
         <TextView
             android:id="@+id/signInText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="Sign Up"
-            android:textColor="@color/text_color"
+            android:textColor="@color/link_text"
             android:textStyle="bold" />
     </LinearLayout>
 
