@@ -1,5 +1,7 @@
 package com.example.gachaurant.restaurantPackage;
 
+import java.util.Objects;
+
 public class Restaurant {
     private String name;
     private double latitude;
@@ -49,7 +51,26 @@ public class Restaurant {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Restaurant restaurant = (Restaurant) obj;
+        return Double.compare(restaurant.rating, rating) == 0 &&
+                Double.compare(restaurant.latitude, latitude) == 0 &&
+                Double.compare(restaurant.longitude, longitude) == 0 &&
+                name.equals(restaurant.name) &&
+                type.equals(restaurant.type) &&
+                address.equals(restaurant.address);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, rating, type, latitude, longitude, address);
+    }
+
 }

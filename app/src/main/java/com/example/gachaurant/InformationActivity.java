@@ -85,6 +85,7 @@ public class InformationActivity extends AppCompatActivity {
     double latitude, longitude;
     int radius;
     FirebaseUser user;
+    Boolean toastUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,22 +135,30 @@ public class InformationActivity extends AppCompatActivity {
                             userPref.put(entry.getKey(), (Boolean) entry.getValue());
                         }
                     }
-
-                    // Now you can iterate over the Map
+                    // Iterate over the Map
                     for (Map.Entry<String, Boolean> entry : userPref.entrySet()) {
                         String checkboxName = entry.getKey();
                         boolean isChecked = entry.getValue();
 
                         // Find the corresponding checkbox by name
-                        int checkboxId = getCheckboxIdByName(checkboxName);
+                        int checkboxId = getCheckboxIdByName(checkboxName, checkBoxIds);
                         if (checkboxId != -1) {
                             CheckBox checkBox = findViewById(checkboxId);
                             checkBox.setChecked(isChecked);
                         }
                     }
                 }
+                //Update the location if the account is registered
                 if (value != null && value.get("location") != null){
                     locationEt.setText((String) value.get("location"));
+                    toastUpdate = true;
+                }else{
+                    toastUpdate = false;
+                }
+                //Update the distance if the account is registered
+                if(value != null && value.get("distance") != null){
+                    int distance = ((Long) value.get("distance")).intValue() / 1000;
+                    distanceSeekBar.setProgress(distance);
                 }
             }
         });
@@ -188,15 +197,19 @@ public class InformationActivity extends AppCompatActivity {
                 preference.put(checkBox.getText().toString(), checkBox.isChecked());
             }
             String locationAddress = locationEt.getText().toString().trim();
-            getLocationFromAddress(locationAddress);
-
-            restaurantList = new ArrayList<>();
-            fetchNearbyPlaces(latitude, longitude, restaurantList);
-
-            Toast.makeText(InformationActivity.this, "User Logged In", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+            if (locationAddress.isEmpty()) {
+                locationEt.setError("Location cannot be empty");
+                progressBar.setVisibility(View.GONE);
+            }
+            else{
+                getLocationFromAddress(locationAddress);
+                if(latitude != 0.0 && longitude != 0.0){
+                    restaurantList = new ArrayList<>();
+                    fetchNearbyPlaces(latitude, longitude, restaurantList);
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
         });
-
     }
 
     private void getLastLocation() {
@@ -267,7 +280,6 @@ public class InformationActivity extends AppCompatActivity {
         }
         return data;
     }
-
 
     private void fetchDataFromUrl(String url, List<Restaurant> restaurantList) {
         Executor executor = Executors.newSingleThreadExecutor();
@@ -347,9 +359,13 @@ public class InformationActivity extends AppCompatActivity {
             Log.d(TAG, "onSuccess: user profile is created for " + userID + " and preference " + preference);
             Log.d(TAG, "Nearby Restaurants: " + restaurantList.toString());
         });
-
-        Toast.makeText(InformationActivity.this, "User Logged In", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+        if(toastUpdate)
+            Toast.makeText(InformationActivity.this, "Preference updated", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(InformationActivity.this, "User logged in", Toast.LENGTH_SHORT).show();
+        if(restaurantMaps != null){
+            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+        }
     }
     private void getLocationFromAddress(String address) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -364,35 +380,20 @@ public class InformationActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(InformationActivity.this, "No location found for the given address", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "No location found for the given address");
+                progressBar.setVisibility(View.GONE);
             }
         } catch (IOException e) {
             Log.e(TAG, "Error getting location from address: " + e.getMessage(), e);
         }
     }
     // Helper method to get checkbox ID by name
-    private int getCheckboxIdByName(String checkboxName) {
-        int[] checkBoxIds = {
-                R.id.vietnameseCB,
-                R.id.chineseCB,
-                R.id.koreanCB,
-                R.id.thaiCB,
-                R.id.mexicanCB,
-                R.id.japaneseCB,
-                R.id.indianCB,
-                R.id.ramenCB,
-                R.id.chickenCB,
-                R.id.bbqCB,
-                R.id.fastFoodCB,
-                R.id.italianCB
-        };
-
+    private int getCheckboxIdByName(String checkboxName, int[] checkBoxIds) {
         for (int checkBoxId : checkBoxIds) {
             CheckBox checkBox = findViewById(checkBoxId);
             if (checkBox.getText().toString().equals(checkboxName)) {
                 return checkBoxId;
             }
         }
-
         return -1; // Not found
     }
 }

@@ -35,6 +35,7 @@ public class RollActivity extends AppCompatActivity {
     List<Restaurant> restaurantList;
     List<Restaurant> restaurantInventory;
     Button homeButton;
+    List<Map<String, Object>> restaurantMaps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,7 @@ public class RollActivity extends AppCompatActivity {
         restaurantList = new ArrayList<>();
         restaurantInventory = new ArrayList<>();
         DocumentReference docRef = fStore.collection("users").document(userId);
+        //Retrieve Restaurant
         docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -58,7 +60,6 @@ public class RollActivity extends AppCompatActivity {
                     return;
                 }
                 if (value != null && value.get("restaurantList") != null) {
-                    List<Map<String, Object>> restaurantMaps = new ArrayList<>();
                     restaurantMaps = (List<Map<String, Object>>) value.get("restaurantList");
                     for (Map<String, Object> restaurantMap : restaurantMaps) {
                         String name = (String) restaurantMap.get("name");
@@ -72,36 +73,26 @@ public class RollActivity extends AppCompatActivity {
                         Log.d(TAG, "restaurantList: " + restaurantList.toString());
                     }
                 }
-                if (value != null && value.get("restaurantInventory") != null){
-                    List<Map<String, Object>> restaurantMaps = new ArrayList<>();
-                    restaurantMaps = (List<Map<String, Object>>) value.get("restaurantInventory");
-                    for (Map<String, Object> restaurantMap : restaurantMaps) {
-
-                        String name = (String) restaurantMap.get("name");
-                        double rating = (double) restaurantMap.get("rating");
-                        String type = (String) restaurantMap.get("type");
-                        double latitude = (double) restaurantMap.get("latitude");
-                        double longitude = (double) restaurantMap.get("longitude");
-                        String address = (String) restaurantMap.get("address");
-                        Restaurant restaurant = new Restaurant(name, rating, address, type, latitude, longitude);
-                        restaurantInventory.add(restaurant);
-                        Log.d(TAG, "restaurantInventory: " + restaurantInventory.toString());
-                    }
-                }
             }
         });
         roll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Restaurant res = selectRandomRestaurant(restaurantList);
-                if(restaurantInventory.contains(res)){
-                    //Level implementation
-                    Toast.makeText(RollActivity.this,"You rolled a duplicated restaurant: " + res.getName(),Toast.LENGTH_SHORT).show();
+                //If there are no distance nearby
+                if(restaurantList.isEmpty()){
+                    Toast.makeText(RollActivity.this,"No restaurant nearby, please increase the distance",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    restaurantInventory.add(res);
-                    Toast.makeText(RollActivity.this,"You rolled " + res.getName(),Toast.LENGTH_SHORT).show();
-                    updateRestaurantInventoryInFirebase();
+                    Restaurant res = selectRandomRestaurant(restaurantList);
+                    if(restaurantInventory.contains(res)){
+                        //Level implementation
+                        Toast.makeText(RollActivity.this,"You rolled a duplicated restaurant: " + res.getName(),Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        restaurantInventory.add(res);
+                        Toast.makeText(RollActivity.this,"You rolled " + res.getName(),Toast.LENGTH_SHORT).show();
+                        updateRestaurantInventoryInFirebase();
+                    }
                 }
             }
         });
@@ -124,12 +115,12 @@ public class RollActivity extends AppCompatActivity {
         if(user != null) {
             userId = fAuth.getCurrentUser().getUid();
         }
+
         DocumentReference docRef = fStore.collection("users").document(userId);
 
         // Create map to update restaurantInventory field
         Map<String, Object> updateData = new HashMap<>();
         List<Map<String, Object>> restaurantInventoryMaps = new ArrayList<>();
-
         for (Restaurant restaurant : restaurantInventory) {
             Map<String, Object> restaurantMap = new HashMap<>();
             restaurantMap.put("name", restaurant.getName());
@@ -141,7 +132,7 @@ public class RollActivity extends AppCompatActivity {
             restaurantInventoryMaps.add(restaurantMap);
         }
 
-        updateData.put("restaurantInventory", restaurantInventoryMaps);
+        updateData.put("restaurantInventory", restaurantInventory);
 
         docRef.update(updateData)
                 .addOnSuccessListener(unused -> Log.d(TAG, "RestaurantInventory updated successfully"))
