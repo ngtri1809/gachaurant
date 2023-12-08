@@ -100,7 +100,7 @@ public class RollActivity extends AppCompatActivity {
                 }
                 else{
                     restaurantInventory.add(res);
-                    Toast.makeText(RollActivity.this,"You rolled" + res.getName(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RollActivity.this,"You rolled " + res.getName(),Toast.LENGTH_SHORT).show();
                     updateRestaurantInventoryInFirebase();
                 }
             }
