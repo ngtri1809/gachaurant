@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RewardsFragment#newInstance} factory method to
@@ -21,14 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 public class RewardsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String CHECK_IN_COUNT = "param1";
 
     private int checkCount;
 
@@ -37,20 +28,10 @@ public class RewardsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RewardsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RewardsFragment newInstance(String param1, String param2) {
+    public static RewardsFragment newInstance(int checkInCount) {
         RewardsFragment fragment = new RewardsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(CHECK_IN_COUNT, checkInCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,9 +40,10 @@ public class RewardsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            checkCount = getArguments().getInt(ARG_PARAM1);
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
+            checkCount = getArguments().getInt(CHECK_IN_COUNT);
+            if (checkCount > 10) {
+                checkCount -= 10;
+            }
         }
     }
 
@@ -76,7 +58,7 @@ public class RewardsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         ProgressBar bar = view.findViewById(R.id.progressBarReward);
         TextView strBar = view.findViewById(R.id.currentProgress);
-        int nprog = checkCount%10 * 10;
+        int nprog = checkCount * 10;
         strBar.setText(String.valueOf(nprog) + "/100");
         bar.setProgress(nprog);
         Button btnRedeem = (Button) view.findViewById(R.id.buttonRedeem);
@@ -90,7 +72,7 @@ public class RewardsFragment extends Fragment {
     }
 
     private void redeemMessage(){
-        if(checkCount%10*10 > 99){
+        if(checkCount*10 > 99){
             AlertDialog.Builder alterBuilder = new AlertDialog.Builder(getContext());
             alterBuilder.setMessage("Congrats Enjoy Your 5$ Reward");
             alterBuilder.setTitle("Congratulations");

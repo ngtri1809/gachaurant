@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class ProfileFragment extends Fragment {
 
-    Button checkInBtn, inventoryBtn;
+    Button checkInBtn, inventoryBtn, rewardsBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -19,6 +19,7 @@ public class ProfileFragment extends Fragment {
         // Find the buttons by their IDs in the fragment's view
         checkInBtn = view.findViewById(R.id.checkin);
         inventoryBtn = view.findViewById(R.id.restaurantInventory);
+        rewardsBtn = view.findViewById(R.id.rewards);
         // Set click listeners for each button
         checkInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,6 +34,14 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 // Handle the click for "My Account" button within the fragment
                 Intent intent = new Intent(getActivity(), RestaurantInventory.class);
+                startActivity(intent);
+            }
+        });
+
+        rewardsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RewardsActivity.class);
                 startActivity(intent);
             }
         });

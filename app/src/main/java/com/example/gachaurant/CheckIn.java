@@ -1,6 +1,8 @@
 package com.example.gachaurant;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,7 @@ public class CheckIn extends AppCompatActivity implements RestaurantClickedCallb
     RecyclerView restaurantsRecyclerView;
     List<Restaurant> restaurants = new ArrayList<>();
     private final String TAG = CheckIn.class.getSimpleName();
+    private RestaurantsAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,12 +84,24 @@ public class CheckIn extends AppCompatActivity implements RestaurantClickedCallb
 
     private void setupRecyclerView() {
         restaurantsRecyclerView = findViewById(R.id.restaurantsRecyclerView);
-        RestaurantsAdapter adapter = new RestaurantsAdapter(this, restaurants, this);
+        adapter = new RestaurantsAdapter(this, restaurants, this);
         restaurantsRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void restaurantClicked(Restaurant restaurant, int position) {
-        Toast.makeText(this, "Clicked:" + restaurant.getName(), Toast.LENGTH_SHORT).show();
+        // Restaurant id, userId
+        Toast.makeText(this, "Checked in at: " + restaurant.getName(), Toast.LENGTH_SHORT).show();
+        saveInSharedPrefs();
+        restaurants.remove(restaurant);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void saveInSharedPrefs() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int checkInCount = sharedPreferences.getInt(RewardsActivity.CHECK_IN_COUNT_KEY, 0);
+
+        checkInCount++;
+        sharedPreferences.edit().putInt(RewardsActivity.CHECK_IN_COUNT_KEY, checkInCount).apply();
     }
 }
