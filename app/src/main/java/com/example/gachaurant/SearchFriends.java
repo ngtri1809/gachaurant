@@ -71,6 +71,7 @@ public class SearchFriends extends AppCompatActivity {
         // Query Firestore for users with usernames containing the query
         CollectionReference usersCollection = db.collection("users");
 
+        // Convert both the stored usernames and the query to lowercase for case-insensitive comparison
         usersCollection.whereEqualTo("userName", query.toLowerCase())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -94,8 +95,7 @@ public class SearchFriends extends AppCompatActivity {
                     }
                 });
     }
-
-
+    private String selectedUsername;
 
     private void updateSearchResults(List<String> searchResults) {
         // Display search results in the resultTextView

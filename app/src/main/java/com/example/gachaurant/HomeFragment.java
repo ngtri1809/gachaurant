@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        roll = view.findViewById(R.id.rollButton);
+        roll = view.findViewById(R.id.goToRoll);
         roll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

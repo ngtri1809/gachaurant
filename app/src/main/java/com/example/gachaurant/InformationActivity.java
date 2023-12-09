@@ -1,6 +1,7 @@
 package com.example.gachaurant;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -36,8 +37,12 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,6 +84,8 @@ public class InformationActivity extends AppCompatActivity {
     TextView distanceAmount;
     double latitude, longitude;
     int radius;
+    FirebaseUser user;
+    Boolean toastUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +104,10 @@ public class InformationActivity extends AppCompatActivity {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         distanceSeekBar.setProgress(INITIAL_DISTANCE);
         distanceAmount.setText(String.valueOf(INITIAL_DISTANCE));
-        String[] placeTypeList = {"restaurant"};
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        user = fAuth.getCurrentUser();
+        radius = INITIAL_DISTANCE;
         //Create an array of all check box
         int[] checkBoxIds = {
                 R.id.vietnameseCB,
@@ -113,6 +123,45 @@ public class InformationActivity extends AppCompatActivity {
                 R.id.fastFoodCB,
                 R.id.italianCB
         };
+        DocumentReference docRef = fStore.collection("users").document(user.getUid());
+        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null && value.get("preference") != null){
+                    Map<String, Boolean> userPref = (Map<String, Boolean>) value.get("preference");
+                    for (Map.Entry<String, Boolean> entry : userPref.entrySet()) {
+                        // Ensure the value is of Boolean type
+                        if (entry.getValue() instanceof Boolean) {
+                            userPref.put(entry.getKey(), (Boolean) entry.getValue());
+                        }
+                    }
+                    // Iterate over the Map
+                    for (Map.Entry<String, Boolean> entry : userPref.entrySet()) {
+                        String checkboxName = entry.getKey();
+                        boolean isChecked = entry.getValue();
+
+                        // Find the corresponding checkbox by name
+                        int checkboxId = getCheckboxIdByName(checkboxName, checkBoxIds);
+                        if (checkboxId != -1) {
+                            CheckBox checkBox = findViewById(checkboxId);
+                            checkBox.setChecked(isChecked);
+                        }
+                    }
+                }
+                //Update the location if the account is registered
+                if (value != null && value.get("location") != null){
+                    locationEt.setText((String) value.get("location"));
+                    toastUpdate = true;
+                }else{
+                    toastUpdate = false;
+                }
+                //Update the distance if the account is registered
+                if(value != null && value.get("distance") != null){
+                    int distance = ((Long) value.get("distance")).intValue() / 1000;
+                    distanceSeekBar.setProgress(distance);
+                }
+            }
+        });
         distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -124,33 +173,42 @@ public class InformationActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        //When click on location
-        locationImg.setOnClickListener(v -> getLastLocation());
+//        When click on location
+        locationImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Location image clicked");
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "Location permission granted");
+                    getLastLocation();
+                } else {
+                    Log.d(TAG, "Location permission not granted");
+                    askPermission();
+                }
+            }
+        });
         //Confirm button click
         confirmButton.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
             //Loop through the array to check for the checked box
             for (int checkBoxId : checkBoxIds) {
                 CheckBox checkBox = findViewById(checkBoxId);
                 Log.d("Checkbox State", checkBox.getText().toString() + ": " + checkBox.isChecked());
                 preference.put(checkBox.getText().toString(), checkBox.isChecked());
             }
-
-            JSONObject requestObject = new JSONObject();
-            try {
-                requestObject.put("keyword", "restaurant");
-                requestObject.put("location", new JSONObject().put("lat", latitude).put("lng", longitude));
-                requestObject.put("radius", 5000);
-                requestObject.put("type", "restaurant");
-                requestObject.put("key", apiKey);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            String locationAddress = locationEt.getText().toString().trim();
+            if (locationAddress.isEmpty()) {
+                locationEt.setError("Location cannot be empty");
+                progressBar.setVisibility(View.GONE);
             }
-
-            restaurantList = new ArrayList<>();
-            fetchNearbyPlaces(latitude, longitude, restaurantList);
-
-            Toast.makeText(InformationActivity.this, "User Logged In", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+            else{
+                getLocationFromAddress(locationAddress);
+                if(latitude != 0.0 && longitude != 0.0){
+                    restaurantList = new ArrayList<>();
+                    fetchNearbyPlaces(latitude, longitude, restaurantList);
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
         });
     }
 
@@ -191,6 +249,7 @@ public class InformationActivity extends AppCompatActivity {
                 getLastLocation();
             }else{
                 Toast.makeText(this, "Permission denied",Toast.LENGTH_SHORT).show();
+                askPermission();
             }
         }
     }
@@ -221,7 +280,6 @@ public class InformationActivity extends AppCompatActivity {
         }
         return data;
     }
-
 
     private void fetchDataFromUrl(String url, List<Restaurant> restaurantList) {
         Executor executor = Executors.newSingleThreadExecutor();
@@ -301,8 +359,41 @@ public class InformationActivity extends AppCompatActivity {
             Log.d(TAG, "onSuccess: user profile is created for " + userID + " and preference " + preference);
             Log.d(TAG, "Nearby Restaurants: " + restaurantList.toString());
         });
+        if(toastUpdate)
+            Toast.makeText(InformationActivity.this, "Preference updated", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(InformationActivity.this, "User logged in", Toast.LENGTH_SHORT).show();
+        if(restaurantMaps != null){
+            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+        }
+    }
+    private void getLocationFromAddress(String address) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(address, 1);
 
-        Toast.makeText(InformationActivity.this, "User Logged In", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+            if (addresses != null && !addresses.isEmpty()) {
+                Address location = addresses.get(0);
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                Log.d(TAG, "Latitude: " + latitude + ", Longitude: " + longitude);
+            } else {
+                Toast.makeText(InformationActivity.this, "No location found for the given address", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "No location found for the given address");
+                progressBar.setVisibility(View.GONE);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error getting location from address: " + e.getMessage(), e);
+        }
+    }
+    // Helper method to get checkbox ID by name
+    private int getCheckboxIdByName(String checkboxName, int[] checkBoxIds) {
+        for (int checkBoxId : checkBoxIds) {
+            CheckBox checkBox = findViewById(checkBoxId);
+            if (checkBox.getText().toString().equals(checkboxName)) {
+                return checkBoxId;
+            }
+        }
+        return -1; // Not found
     }
 }

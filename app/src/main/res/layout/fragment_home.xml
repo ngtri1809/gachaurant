@@ -9,7 +9,7 @@
 
     <!-- Update: background color and style -->
     <Button
-        android:id="@+id/rollButton"
+        android:id="@+id/goToRoll"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="100dp"

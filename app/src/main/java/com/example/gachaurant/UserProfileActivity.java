@@ -42,7 +42,6 @@ public class UserProfileActivity extends AppCompatActivity {
         fullName = findViewById(R.id.fullnameDB);
         email = findViewById(R.id.emailDB);
         userName = findViewById(R.id.userNameDB);
-        location = findViewById(R.id.locationDB);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userId = fAuth.getCurrentUser().getUid();
@@ -58,11 +57,12 @@ public class UserProfileActivity extends AppCompatActivity {
                 fullName.setText(value.getString("fullName"));
                 userName.setText(value.getString("userName"));
                 email.setText(value.getString("email"));
-                location.setText(value.getString("location"));
             }
         });
+        String originFullName = fullName.getText().toString();
+        String originUserName = userName.getText().toString();
 
-        //After clicking the done button
+                //After clicking the done button
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,12 +84,13 @@ public class UserProfileActivity extends AppCompatActivity {
                                     startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
                                 }
                             });
-                            Toast.makeText(UserProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
+                            if(isEditTextEdited(fullName, originFullName) || isEditTextEdited(userName, originUserName))
+                                Toast.makeText(UserProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(UserProfileActivity.this, "email is not updated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserProfileActivity.this, "email cannot be updated", Toast.LENGTH_SHORT).show();
                         }
                     });
 
