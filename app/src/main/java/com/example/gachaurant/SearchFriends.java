@@ -36,7 +36,7 @@ public class SearchFriends extends AppCompatActivity {
 
         // Initialize views
         searchEditText = findViewById(R.id.searchEditText);
-        resultTextView = findViewById(R.id.resultLayout);
+        resultTextView = findViewById(R.id.selectedUsernameTextView);
         backButton = findViewById(R.id.backBtn3);
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -49,10 +49,12 @@ public class SearchFriends extends AppCompatActivity {
         // Set up TextWatcher for real-time search
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -95,18 +97,40 @@ public class SearchFriends extends AppCompatActivity {
                     }
                 });
     }
+
     private String selectedUsername;
 
     private void updateSearchResults(List<String> searchResults) {
         // Display search results in the resultTextView
         if (searchResults.isEmpty()) {
             resultTextView.setText("No matching users found.");
+            selectedUsername = null; // Reset selectedUsername if no results
         } else {
-            StringBuilder resultText = new StringBuilder();
+            StringBuilder resultText = new StringBuilder("Matching users found:\n");
             for (String username : searchResults) {
                 resultText.append(username).append("\n");
             }
+            resultText.append("Select a user to add as a friend.");
+
+            // Set the first matching username as the selectedUsername (you can modify this logic as needed)
+            selectedUsername = searchResults.get(0);
+
+            // Update the TextView under the search bar with the selected username
+            displaySelectedUsername();
+
+            // Display the message in resultTextView
             resultTextView.setText(resultText.toString());
+        }
+    }
+
+    // Add this method to update the TextView under the search bar with the selected username
+    private void displaySelectedUsername() {
+        TextView selectedUsernameTextView = findViewById(R.id.selectedUsernameTextView);
+
+        if (selectedUsername != null) {
+            selectedUsernameTextView.setText("Selected user: " + selectedUsername);
+        } else {
+            selectedUsernameTextView.setText(""); // Clear the TextView if no selected username
         }
     }
 }
