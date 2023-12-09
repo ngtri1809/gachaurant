@@ -18,10 +18,12 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
     private Context context;
     private List<Restaurant> restaurants;
+    private RestaurantClickedCallback restaurantClickedCallback;
 
-    public RestaurantsAdapter(Context context, List<Restaurant> restaurants) {
+    public RestaurantsAdapter(Context context, List<Restaurant> restaurants, RestaurantClickedCallback restaurantClickedCallback) {
         this.context = context;
         this.restaurants = restaurants;
+        this.restaurantClickedCallback = restaurantClickedCallback;
     }
 
     @NonNull
@@ -37,6 +39,13 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         holder.nameTextView.setText(restaurant.getName());
         holder.addressTextView.setText(restaurant.getAddress());
         holder.ratingTextView.setText(context.getString(R.string.rating, restaurant.getRating()));
+        final int pos = position;
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restaurantClickedCallback.restaurantClicked(restaurant, pos);
+            }
+        });
     }
 
     @Override
@@ -48,11 +57,13 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         TextView nameTextView;
         TextView addressTextView;
         TextView ratingTextView;
+        View container;
         public RestaurantViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
             ratingTextView = itemView.findViewById(R.id.ratingTextView);
+            container = itemView.findViewById(R.id.container);
         }
     }
 }

@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gachaurant.adapters.RestaurantClickedCallback;
 import com.example.gachaurant.adapters.RestaurantsAdapter;
 import com.example.gachaurant.restaurantPackage.Restaurant;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class CheckIn extends AppCompatActivity {
+public class CheckIn extends AppCompatActivity implements RestaurantClickedCallback {
     Button backButton;
     RecyclerView restaurantsRecyclerView;
     List<Restaurant> restaurants = new ArrayList<>();
@@ -79,7 +81,12 @@ public class CheckIn extends AppCompatActivity {
 
     private void setupRecyclerView() {
         restaurantsRecyclerView = findViewById(R.id.restaurantsRecyclerView);
-        RestaurantsAdapter adapter = new RestaurantsAdapter(this, restaurants);
+        RestaurantsAdapter adapter = new RestaurantsAdapter(this, restaurants, this);
         restaurantsRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void restaurantClicked(Restaurant restaurant, int position) {
+        Toast.makeText(this, "Clicked:" + restaurant.getName(), Toast.LENGTH_SHORT).show();
     }
 }
