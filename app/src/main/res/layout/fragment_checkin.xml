@@ -64,6 +64,12 @@
         android:drawableLeft="@mipmap/searchbar_foreground"
         android:background="@drawable/rounded_background" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/restaurantsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
 
     </LinearLayout>
 
