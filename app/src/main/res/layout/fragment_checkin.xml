@@ -51,18 +51,12 @@
         android:textSize="25sp"
         android:textStyle="bold" />
 
-    <!-- Search Bar -->
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:hint="Search Restaurants"
-        android:layout_marginTop="35dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:inputType="text"
-        android:textSize="22sp"
-        android:drawableLeft="@mipmap/searchbar_foreground"
-        android:background="@drawable/rounded_background" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/restaurantsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
     </LinearLayout>
