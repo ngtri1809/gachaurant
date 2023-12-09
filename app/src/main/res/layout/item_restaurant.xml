@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:src="@drawable/restaurant_inventory"
+        android:src="@drawable/homeicon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
