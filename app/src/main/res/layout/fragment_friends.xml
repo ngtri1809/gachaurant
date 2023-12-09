@@ -7,7 +7,6 @@
     android:background="@color/background"
     tools:context=".FriendsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,12 +30,23 @@
                 android:id="@+id/searchfriends"
                 android:layout_width="92dp"
                 android:layout_height="76dp"
+                android:contentDescription="search friend icon"
                 android:backgroundTint="@color/background"
                 android:src="@mipmap/search_friends_foreground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Add a TableLayout in the middle -->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <!-- Add your table rows and cells here -->
+
+        </TableLayout>
 
         <TextView
             android:id="@+id/friend"

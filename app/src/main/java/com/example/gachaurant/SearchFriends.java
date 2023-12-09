@@ -25,6 +25,8 @@ public class SearchFriends extends AppCompatActivity {
     private TextView resultTextView;
     private Button backButton;
     private FirebaseFirestore db;
+    private String selectedEmail;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class SearchFriends extends AppCompatActivity {
         CollectionReference usersCollection = db.collection("users");
 
         // Convert both the stored usernames and the query to lowercase for case-insensitive comparison
-        usersCollection.whereEqualTo("userName", query.toLowerCase())
+        usersCollection.whereEqualTo("email", query.toLowerCase())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -97,40 +99,40 @@ public class SearchFriends extends AppCompatActivity {
                     }
                 });
     }
-
-    private String selectedUsername;
-
     private void updateSearchResults(List<String> searchResults) {
         // Display search results in the resultTextView
         if (searchResults.isEmpty()) {
             resultTextView.setText("No matching users found.");
-            selectedUsername = null; // Reset selectedUsername if no results
+            selectedEmail = null; // Reset selectedUsername if no results
         } else {
-            StringBuilder resultText = new StringBuilder("Matching users found:\n");
+            StringBuilder resultText = new StringBuilder("Matching users found by email:\n");
             for (String username : searchResults) {
                 resultText.append(username).append("\n");
             }
             resultText.append("Select a user to add as a friend.");
 
             // Set the first matching username as the selectedUsername (you can modify this logic as needed)
-            selectedUsername = searchResults.get(0);
+            selectedEmail = searchResults.get(0);
 
             // Update the TextView under the search bar with the selected username
-            displaySelectedUsername();
+            displaySelectedEmail();
 
             // Display the message in resultTextView
+            // Move this line after updating selectedUsernameTextView
+            // This ensures that the resultTextView doesn't overwrite the selected username
             resultTextView.setText(resultText.toString());
         }
     }
 
+
     // Add this method to update the TextView under the search bar with the selected username
-    private void displaySelectedUsername() {
+    private void displaySelectedEmail() {
         TextView selectedUsernameTextView = findViewById(R.id.selectedUsernameTextView);
 
-        if (selectedUsername != null) {
-            selectedUsernameTextView.setText("Selected user: " + selectedUsername);
+        if (selectedEmail != null) {
+            selectedUsernameTextView.setText("Selected email: " + selectedEmail);
         } else {
-            selectedUsernameTextView.setText(""); // Clear the TextView if no selected username
+            selectedUsernameTextView.setText(""); // Clear the TextView if no selected email
         }
     }
 }
