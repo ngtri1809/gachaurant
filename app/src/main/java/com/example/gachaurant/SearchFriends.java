@@ -1,6 +1,5 @@
 package com.example.gachaurant;
 
-import android.accounts.AccountManagerFuture;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,9 +23,10 @@ public class SearchFriends extends AppCompatActivity {
     private EditText searchEditText;
     private TextView resultTextView;
     private Button backButton;
+    private Button addButton; // Added button reference
     private FirebaseFirestore db;
     private String selectedEmail;
-    
+    private FriendsFragment friendsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +40,10 @@ public class SearchFriends extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         resultTextView = findViewById(R.id.selectedUsernameTextView);
         backButton = findViewById(R.id.backBtn3);
+        addButton = findViewById(R.id.addButton);
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        // Initialize FriendsFragment
+        friendsFragment = new FriendsFragment();
 
         // Set up TextWatcher for real-time search
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -62,6 +59,25 @@ public class SearchFriends extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 // Perform search when text changes
                 searchUsers(editable.toString());
+            }
+        });
+
+        // Set click listener for the "Add" button
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Handle the addition of the selected email to your friend list
+                if (selectedEmail != null) {
+                    friendsFragment.addFriendToTable(selectedEmail);
+                }
+            }
+        });
+
+        // Set click listener for the back button
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
@@ -99,6 +115,7 @@ public class SearchFriends extends AppCompatActivity {
                     }
                 });
     }
+
     private void updateSearchResults(List<String> searchResults) {
         // Display search results in the resultTextView
         if (searchResults.isEmpty()) {
@@ -118,12 +135,9 @@ public class SearchFriends extends AppCompatActivity {
             displaySelectedEmail();
 
             // Display the message in resultTextView
-            // Move this line after updating selectedUsernameTextView
-            // This ensures that the resultTextView doesn't overwrite the selected username
             resultTextView.setText(resultText.toString());
         }
     }
-
 
     // Add this method to update the TextView under the search bar with the selected username
     private void displaySelectedEmail() {

@@ -47,15 +47,16 @@
             android:text=" "
             android:textSize="18sp" />
 
-        <!--<Button
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:translationX="150dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/button"
             android:text="Add"
+            android:contentDescription="Add button"
             android:textColor="@color/text_box"
             android:id="@+id/addButton"
-            /> -->
+            />
     </LinearLayout>
 </FrameLayout>

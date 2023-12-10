@@ -40,6 +40,7 @@
 
         <!-- Add a TableLayout in the middle -->
         <TableLayout
+            android:id="@+id/friendsTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
@@ -49,7 +50,7 @@
         </TableLayout>
 
         <TextView
-            android:id="@+id/friend"
+            android:id="@+id/friendCountTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Friend 0"
