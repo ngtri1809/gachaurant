@@ -32,7 +32,9 @@
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="12451000"
+            tools:replace="android:value"
+            />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${API_KEY}" />
@@ -60,9 +62,13 @@
             android:exported="false" />
         <activity
             android:name=".GroupSetting"
-            android:exported="false" />
-        <activity android:name=".CreateGroup" />
-        <activity android:name=".SearchFriends" />
+            android:exported="false"/>
+        <activity
+            android:name=".CreateGroup" />
+        <activity
+            android:name=".SearchFriends"
+            android:exported="false"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">

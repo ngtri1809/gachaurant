@@ -11,22 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-            <Button
-                android:id="@+id/backBtn3"
-                android:layout_width="65dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:text="back3"
-                android:backgroundTint="@color/button"
-                android:drawableLeft="@drawable/baseline_arrow_back_ios_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+        <Button
+            android:id="@+id/backBtn3"
+            android:layout_width="65dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text="back3"
+            android:backgroundTint="@color/button"
+            android:drawableLeft="@drawable/baseline_arrow_back_ios_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Search Bar -->
         <EditText
+            android:id="@+id/searchEditText"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:hint="Search friends"
@@ -38,7 +37,26 @@
             android:drawableLeft="@mipmap/searchbar_foreground"
             android:background="@drawable/rounded_background" />
 
+        <!-- Display the search result -->
+        <TextView
+            android:id="@+id/selectedUsernameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:text=""
+            android:textSize="18sp" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationX="150dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/button"
+            android:text="Add"
+            android:contentDescription="Add button"
+            android:textColor="@color/text_box"
+            android:id="@+id/addButton"
+            />
     </LinearLayout>
-
 </FrameLayout>

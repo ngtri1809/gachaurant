@@ -7,49 +7,59 @@
     android:background="@color/background"
     tools:context=".FriendsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/friendsIcon"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/friendsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="85dp"
+                android:src="@mipmap/friends_foreground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/searchfriends"
+                android:layout_width="92dp"
+                android:layout_height="76dp"
+                android:contentDescription="search friend icon"
+                android:backgroundTint="@color/background"
+                android:src="@mipmap/search_friends_foreground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Add a TableLayout in the middle -->
+        <TableLayout
+            android:id="@+id/friendsTable"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="85dp"
-            android:src="@mipmap/friends_foreground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center">
 
-        <ImageButton
-            android:id="@+id/searchfriends"
-            android:layout_width="92dp"
-            android:layout_height="76dp"
-            android:backgroundTint="@color/background"
-            android:src="@mipmap/search_friends_foreground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <!-- TableRow for the static title/header -->
+            <TableRow>
+                <TextView
+                    android:id="@+id/friendCountTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/friend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Friend 0"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:textStyle="bold" />
-
-
-
+            <!-- Dynamic TableRow and TextView elements will be added programmatically -->
+        </TableLayout>
     </LinearLayout>
 
 </FrameLayout>
