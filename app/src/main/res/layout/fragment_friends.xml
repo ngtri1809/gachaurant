@@ -45,20 +45,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-            <!-- Add your table rows and cells here -->
+            <!-- TableRow for the static title/header -->
+            <TableRow>
+                <TextView
+                    android:id="@+id/friendCountTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </TableRow>
 
+            <!-- Dynamic TableRow and TextView elements will be added programmatically -->
         </TableLayout>
-
-        <TextView
-            android:id="@+id/friendCountTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Friend 0"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
     </LinearLayout>
 
 </FrameLayout>
