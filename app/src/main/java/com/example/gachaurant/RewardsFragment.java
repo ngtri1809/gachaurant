@@ -25,6 +25,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import org.w3c.dom.Text;
+
 import java.util.Map;
 
 /**
@@ -105,17 +107,19 @@ public class RewardsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //where is update value of progress?
-                redeemMessage();
+                redeemMessage(bar,strBar);
             }
         });
     }
 
-    private void redeemMessage(){
+    private void redeemMessage(ProgressBar bar, TextView strBar){
         if(experience > 99){
             AlertDialog.Builder alterBuilder = new AlertDialog.Builder(getContext());
-            alterBuilder.setMessage("Congrats Enjoy Your 5$ Reward");
+            alterBuilder.setMessage("Congrats Enjoy Your $5 Reward");
             alterBuilder.setTitle("Congratulations");
             alterBuilder.setPositiveButton("OK", null);
+            strBar.setText("0/100");
+            bar.setProgress(0);
             AlertDialog dlg = alterBuilder.create();
             dlg.show();
         }
