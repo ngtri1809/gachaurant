@@ -3,14 +3,29 @@ package com.example.gachaurant;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +37,12 @@ public class RewardsFragment extends Fragment {
     private static final String CHECK_IN_COUNT = "param1";
 
     private int checkCount;
+    FirebaseFirestore fStore;
 
+    FirebaseUser user;
+    FirebaseAuth fAuth;
+    private long level = 1;
+    private long experience = 0;
 
     public RewardsFragment() {
         // Required empty public constructor
@@ -39,12 +59,15 @@ public class RewardsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            checkCount = getArguments().getInt(CHECK_IN_COUNT);
-            if (checkCount > 10) {
-                checkCount -= 10;
-            }
-        }
+        fStore = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
+//        if (getArguments() != null) {
+//            checkCount = getArguments().getInt(CHECK_IN_COUNT);
+//            if (checkCount > 10) {
+//                checkCount -= 10;
+//            }
+//        }
     }
 
     @Override
@@ -58,9 +81,25 @@ public class RewardsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         ProgressBar bar = view.findViewById(R.id.progressBarReward);
         TextView strBar = view.findViewById(R.id.currentProgress);
-        int nprog = checkCount * 10;
-        strBar.setText(String.valueOf(nprog) + "/100");
-        bar.setProgress(nprog);
+
+        DocumentReference docRef = fStore.collection("users").document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot value = task.getResult();
+                    if(value.get("level")!=null){
+                        level = (long) value.get("level");
+                    }
+                    if(value.get("experience")!=null){
+                        experience = (long) value.get("experience");
+                    }
+                    strBar.setText(experience + "/100");
+                    bar.setProgress(Integer.valueOf(""+experience));
+                }
+            }
+        });
+
         Button btnRedeem = (Button) view.findViewById(R.id.buttonRedeem);
         btnRedeem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +111,7 @@ public class RewardsFragment extends Fragment {
     }
 
     private void redeemMessage(){
-        if(checkCount*10 > 99){
+        if(experience > 99){
             AlertDialog.Builder alterBuilder = new AlertDialog.Builder(getContext());
             alterBuilder.setMessage("Congrats Enjoy Your 5$ Reward");
             alterBuilder.setTitle("Congratulations");
