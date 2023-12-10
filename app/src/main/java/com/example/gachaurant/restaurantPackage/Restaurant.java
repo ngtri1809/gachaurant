@@ -10,6 +10,8 @@ public class Restaurant {
     private String type;
     private String address;
 
+    private boolean checkIn;
+
     public Restaurant(String name, double rating, String address, String type, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
@@ -17,6 +19,14 @@ public class Restaurant {
         this.rating = rating;
         this.type = type;
         this.address =  address;
+    }
+
+    public boolean isCheckIn() {
+        return checkIn;
+    }
+
+    public void setCheckIn(boolean checkIn) {
+        this.checkIn = checkIn;
     }
 
     public String getAddress() {
