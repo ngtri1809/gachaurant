@@ -48,13 +48,30 @@ public class RollActivity extends AppCompatActivity {
         if(user != null) {
             userId = fAuth.getCurrentUser().getUid();
         }
-        restaurantList = new ArrayList<>();
         restaurantInventory = new ArrayList<>();
+        restaurantList = new ArrayList<>();
         DocumentReference docRef = fStore.collection("users").document(userId);
         //Retrieve Restaurant
         docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                restaurantInventory.clear(); // restaurantInventory gets populated every times roll button is clicked (event) so we have to clear every times
+                if (value != null && value.get("restaurantInventory") != null){
+                    List<Map<String, Object>> restaurantMaps = new ArrayList<>();
+                    restaurantMaps = (List<Map<String, Object>>) value.get("restaurantInventory");
+                    for (Map<String, Object> restaurantMap : restaurantMaps) {
+
+                        String name = (String) restaurantMap.get("name");
+                        double rating = (double) restaurantMap.get("rating");
+                        String type = (String) restaurantMap.get("type");
+                        double latitude = (double) restaurantMap.get("latitude");
+                        double longitude = (double) restaurantMap.get("longitude");
+                        String address = (String) restaurantMap.get("address");
+                        Restaurant restaurant = new Restaurant(name, rating, address, type, latitude, longitude);
+                        restaurantInventory.add(restaurant);
+                        Log.d(TAG, "restaurantInventory: " + restaurantInventory.toString());
+                    }
+                }
                 if (error != null) {
                     Log.e(TAG, "Error listening to Firestore snapshot", error);
                     return;
@@ -85,13 +102,12 @@ public class RollActivity extends AppCompatActivity {
                 else{
                     Restaurant res = selectRandomRestaurant(restaurantList);
                     if(restaurantInventory.contains(res)){
-                        //Level implementation
                         Toast.makeText(RollActivity.this,"You rolled a duplicated restaurant: " + res.getName(),Toast.LENGTH_SHORT).show();
                     }
                     else{
                         restaurantInventory.add(res);
-                        Toast.makeText(RollActivity.this,"You rolled " + res.getName(),Toast.LENGTH_SHORT).show();
                         updateRestaurantInventoryInFirebase();
+                        Toast.makeText(RollActivity.this,"You rolled " + res.getName(),Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -115,23 +131,8 @@ public class RollActivity extends AppCompatActivity {
         if(user != null) {
             userId = fAuth.getCurrentUser().getUid();
         }
-
         DocumentReference docRef = fStore.collection("users").document(userId);
-
-        // Create map to update restaurantInventory field
         Map<String, Object> updateData = new HashMap<>();
-        List<Map<String, Object>> restaurantInventoryMaps = new ArrayList<>();
-        for (Restaurant restaurant : restaurantInventory) {
-            Map<String, Object> restaurantMap = new HashMap<>();
-            restaurantMap.put("name", restaurant.getName());
-            restaurantMap.put("rating", restaurant.getRating());
-            restaurantMap.put("type", restaurant.getType());
-            restaurantMap.put("latitude", restaurant.getLatitude());
-            restaurantMap.put("longitude", restaurant.getLongitude());
-            restaurantMap.put("address", restaurant.getAddress());
-            restaurantInventoryMaps.add(restaurantMap);
-        }
-
         updateData.put("restaurantInventory", restaurantInventory);
 
         docRef.update(updateData)
